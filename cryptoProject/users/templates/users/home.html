@@ -1,0 +1,19 @@
+{% extends 'users/base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+	<h1>Home page for crypto portfolio app </h1>
+	<p>This is the home page.</p>
+	<p>The live price of Bitcoin is: £{{ bitcoin_price }}</p>
+	<p>The live balance of Bitcoin address is : {{ bitcoin_balance}} BTC</p>
+
+{% endblock %}
+
+{% block script %}  <!-- no currently working -->
+    <script>
+        setInterval(function() {
+            location.reload();
+        }, 30000);
+    </script>
+{% endblock %}
