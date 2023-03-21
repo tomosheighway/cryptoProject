@@ -4,6 +4,9 @@ from . forms import UserRegisterForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 import requests
+from django.shortcuts import render
+from django.contrib import messages
+from users.models import Portfolio 
 
 def get_bitcoin_price():
     url = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=gbp'
@@ -27,6 +30,7 @@ def register(request):
         form = UserRegisterForm(request.POST)
         if form.is_valid():
             form.save()
+            print(request.POST) 
             username= form.cleaned_data.get('username')
             messages.success(request, f'Hi {username} , your account has been created please now login below ' )
             return redirect('login')
@@ -38,3 +42,47 @@ def register(request):
 @login_required()
 def profile(request):
     return render(request, 'users/profile.html')
+
+@login_required()
+def portfolio(request):
+    if request.method == 'POST':
+        btc_address = request.POST.get('btc_address')
+        currency_name = request.POST.get('currency_name')
+        portfolio = Portfolio.objects.create(user=request.user, address=btc_address, currency=currency_name)
+        return redirect('portfolio')
+
+    return render(request, 'users/portfolio.html')
+
+    # if request.method == 'POST':
+    #     # Handle form submission
+    #     currency = request.POST.get('currency_name')
+    #     wallet_address = request.POST.get('btc_address')
+
+    #     if currency:
+    #         Portfolio.object.create(user=request.user , currency=currency , address=wallet_address)
+    #         print("data saved")
+            
+
+    # else:
+    #     print("oops")
+    #     # portfolio_objs =  Portfolio.object.filter(user=request.user)
+    #     # wallet_list =[]
+        
+
+def add_crypto(request):
+    
+    if request.method == 'POST':
+        # Handle form submission
+        currency = request.POST.get('currency_name')
+        wallet_address = request.POST.get('btc_address')
+        print("posting ")
+        # Do something with the data, e.g. save to database
+        
+        messages.success(request, 'Crypto added successfully!')
+        return render(request, 'users/profile.html')
+    else:
+        # Render the add crypto form
+        print("else ")
+        return render(request, 'users/portfolio.html')
+        
+

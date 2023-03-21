@@ -12,7 +12,7 @@
 	<!-- Add the navigation bar at the top -->
 	<nav>
 		<a href="{% url 'home' %}">Home</a>
-		<a href="#">Prices</a>
+		<a href="{% url 'portfolio' %}">Portfolio</a>
 		<a href="#">Graphs</a>
 		<div style="float:right">
 			{% if user.is_authenticated%}
