@@ -1,22 +1,35 @@
 {% extends 'users/base.html' %}
 {% load crispy_forms_tags %}
 
-
-{% block content%}
+{% block content %}
     <div class="container">
-        
         <h2>Hello {{user.username}}</h2>
         <h3>ADD BTC Address and Currency Name</h3>
         <form method="post" action="{% url 'portfolio' %}">
             {% csrf_token %}
-            <label for="btc_address">BTC Address:</label>
-            <input type="text" id="btc_address" name="btc_address" required>
+            <label for="wallet_address">Wallet Address:</label>
+            <input type="text" id="wallet_address" name="wallet_address" required>
             <br>
             <label for="currency_name">Currency Name:</label>
-            <input type="text" id="currency_name" name="currency_name" required>
+            <select id="currency_name" name="currency_name" required>
+                <option value="">Select a currency...</option>
+                <option value="btc">Bitcoin</option>
+                <option value="eth">Ethereum</option>
+                <option value="Litecoin">Litecoin</option>
+            </select>
             <br>
             <button type="submit">Add</button>
-          </form>
-    </div>
+        </form>
 
-{%endblock%}
+        <h2>Your Portfolio</h2>
+        {% if portfolios %}
+            <ul>
+                {% for portfolio in portfolios %}
+                    <li>{{ portfolio.currency }}: {{ portfolio.address }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>You don't have any portfolios yet.</p>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -46,12 +46,16 @@ def profile(request):
 @login_required()
 def portfolio(request):
     if request.method == 'POST':
-        btc_address = request.POST.get('btc_address')
+        wallet_address = request.POST.get('wallet_address')
         currency_name = request.POST.get('currency_name')
-        portfolio = Portfolio.objects.create(user=request.user, address=btc_address, currency=currency_name)
+        portfolio = Portfolio.objects.create(user=request.user, address=wallet_address, currency=currency_name)
+        messages.success(request, 'Crypto wallet added successfully!')
+        print("Created succesfully")
         return redirect('portfolio')
-
-    return render(request, 'users/portfolio.html')
+    else:
+        portfolios = Portfolio.objects.filter(user=request.user)
+        
+    return render(request, 'users/portfolio.html', {'portfolios': portfolios})
 
     # if request.method == 'POST':
     #     # Handle form submission
@@ -69,20 +73,4 @@ def portfolio(request):
     #     # wallet_list =[]
         
 
-def add_crypto(request):
-    
-    if request.method == 'POST':
-        # Handle form submission
-        currency = request.POST.get('currency_name')
-        wallet_address = request.POST.get('btc_address')
-        print("posting ")
-        # Do something with the data, e.g. save to database
-        
-        messages.success(request, 'Crypto added successfully!')
-        return render(request, 'users/profile.html')
-    else:
-        # Render the add crypto form
-        print("else ")
-        return render(request, 'users/portfolio.html')
-        
 
