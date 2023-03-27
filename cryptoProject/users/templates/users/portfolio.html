@@ -25,7 +25,15 @@
         {% if portfolios %}
             <ul>
                 {% for portfolio in portfolios %}
-                    <li>{{ portfolio.currency }}: {{ portfolio.address }}</li>
+                    {% if portfolio.currency == 'btc' %}
+                        <li>{{ portfolio.currency }}: {{ portfolio.address }}     Balance: {{ portfolio.balance}}BTC.     Value: £{{ portfolio.value|floatformat:2 }} </li>
+                    {% elif portfolio.currency == 'eth' %}
+                        <li>{{ portfolio.currency }}: {{ portfolio.address }}     Balance: {{ portfolio.balance }}ETH.  Value: £{{ portfolio.value|floatformat:2 }}</li>
+                    {% else %}
+                        <li>{{ portfolio.currency }} is not supported.</li>
+                    {% endif %}
+                    
+            
                 {% endfor %}
             </ul>
         {% else %}
