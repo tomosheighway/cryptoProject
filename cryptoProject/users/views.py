@@ -8,6 +8,9 @@ from django.shortcuts import render
 from django.contrib import messages
 from users.models import Portfolio 
 from decimal import Decimal
+import json
+from datetime import datetime
+from django.http import JsonResponse
 
 def get_bitcoin_price():
     url = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=gbp'
@@ -76,9 +79,45 @@ def register(request):
 def profile(request):
     return render(request, 'users/profile.html')
 
+
+def bitcoin_chart(request):
+    # Set up the API endpoint and parameters
+    url = "https://api.coingecko.com/api/v3/coins/bitcoin/market_chart"
+    params = {
+        "vs_currency": "gbp",
+        "days": "365",
+        "interval": "daily"
+    }
+
+    response = requests.get(url, params=params)
+
+    if response.status_code == 200:
+        data = json.loads(response.content)
+
+        # Extract the trading prices and timestamps from the response
+        prices = data['prices']
+        timestamps = [datetime.fromtimestamp(timestamp[0]/1000) for timestamp in prices]
+        prices_gbp = [price[1] for price in prices]
+
+        # Create a list of dictionaries containing the timestamp and price data
+        data_list = [{'x': timestamp, 'y': price} for timestamp, price in zip(timestamps, prices_gbp)]
+
+        # Return the data as a JSON response
+        print(data_list)
+        return JsonResponse({'data': data_list})
+        
+
+    else:
+        print(f"Error fetching data: {response.status_code}")
+
+
 @login_required()
 def graphs(request):
+    bitcoin_data = bitcoin_chart(request)
     return render(request, 'users/graphs.html')
+
+
+
 
 @login_required()
 def portfolio(request):

@@ -1,12 +1,65 @@
 {% extends 'users/base.html' %}
 {% load crispy_forms_tags %}
 
+{% block content %}
+<div class="container">
+    <h1>Bitcoin Price Chart</h1>
+    <h2>{{ user.username }}</h2>
+    <canvas id="bitcoin-chart"></canvas>
+</div>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+var ctx = document.getElementById('bitcoin-chart').getContext('2d');
+var chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        datasets: [{
+            label: 'Bitcoin Price (GBP)',
+            data: [],
+            borderColor: 'blue',
+            borderWidth: 1, 
+            fill: false
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            xAxes: [{
+                type: 'time',
+                time: {
+                    unit: 'day',
+                    displayFormats: {
+                        day: 'DD MMM YYYY'
+                    },
+                    fontSize: 30,
+                    fontColor: '#333'
+                },
+                ticks: {
+                    source: 'auto',
+                    maxRotation: 0,
+                    autoSkip: true
+                }
+            }],
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
 
-{% block content%}
-    <div class="container">
-        <h1>Bitcoin Price Chart</h1>
-        <h2> {{user.username}}</h2>
-        
-    </div>
-{%endblock%}
+function fetchData() {
+    fetch('/bitcoin-chart/')
+    .then(response => response.json())
+    .then(data => {
+        chart.data.datasets[0].data = data.data;
+        chart.update();
+    });
+}
+
+fetchData();   
+setInterval(fetchData, 3600000);      // updates every hour at the moment but data only daily , (60000)=  minute 
+</script>
+{% endblock %}
