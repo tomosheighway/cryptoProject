@@ -30,7 +30,7 @@
                     {% elif portfolio.currency == 'eth' %}
                         <li>{{ portfolio.currency }}: {{ portfolio.address }}     Balance: {{ portfolio.balance }}ETH.  Value: £{{ portfolio.value|floatformat:2 }}</li>
                     {% else %}
-                        <li>{{ portfolio.currency }} is not supported.</li>
+                        <li>{{ portfolio.currency }}: {{ portfolio.address }} is not supported.</li>
                     {% endif %}
                     
             
