@@ -77,6 +77,10 @@ def profile(request):
     return render(request, 'users/profile.html')
 
 @login_required()
+def graphs(request):
+    return render(request, 'users/graphs.html')
+
+@login_required()
 def portfolio(request):
     if request.method == 'POST':
         wallet_address = request.POST.get('wallet_address')
