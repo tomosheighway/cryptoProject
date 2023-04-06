@@ -1,11 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect ,get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
 from . forms import UserRegisterForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 import requests
-from django.shortcuts import render
-from django.contrib import messages
 from users.models import Portfolio 
 from decimal import Decimal
 import json
@@ -185,7 +183,12 @@ def portfolio(request):
 
         return render(request, 'users/portfolio.html', {'portfolios': portfolios})
 
-
+def delete_portfolio(request, pk):
+    portfolio = get_object_or_404(Portfolio, pk=pk, user=request.user)
+    if request.method == 'POST':
+        portfolio.delete()
+        return redirect('portfolio')
+    return render(request, 'users/delete_portfolio.html', {'portfolio': portfolio})
 
 
     # if request.method == 'POST':

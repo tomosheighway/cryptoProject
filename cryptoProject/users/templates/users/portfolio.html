@@ -17,10 +17,8 @@
                 <option value="eth">Ethereum</option>
                 <!-- <option value="Litecoin">Litecoin</option> -->
             </select>
-            <br>
-            
-            <button type="submit">Add</button>
-            
+            <br>  
+            <button type="submit">Add</button>    
         </form>
 
         <h2>Your Portfolio</h2>
@@ -28,9 +26,14 @@
             <ul>
                 {% for portfolio in portfolios %}
                     {% if portfolio.currency == 'btc' %}
-                        <li>{{ portfolio.currency }}: {{ portfolio.address }}     Balance: {{ portfolio.balance}}BTC.     Value: £{{ portfolio.value|floatformat:2 }} </li>
+                        <li>{{ portfolio.currency }}: {{ portfolio.address }}     Balance: {{ portfolio.balance}}BTC.     Value: £{{ portfolio.value|floatformat:2 }} 
+                            <a href="{% url 'delete_portfolio' pk=portfolio.pk %}">Delete Wallet </a>
+                        </li>
                     {% elif portfolio.currency == 'eth' %}
-                        <li>{{ portfolio.currency }}: {{ portfolio.address }}     Balance: {{ portfolio.balance }}ETH.  Value: £{{ portfolio.value|floatformat:2 }}</li>
+                        <li>{{ portfolio.currency }}: {{ portfolio.address }}     Balance: {{ portfolio.balance }}ETH.  Value: £{{ portfolio.value|floatformat:2 }}
+                            <a href="{% url 'delete_portfolio' pk=portfolio.pk %}">Delete Wallet</a>
+                        </li>
+
                     {% else %}
                         <li>{{ portfolio.currency }}: {{ portfolio.address }} is not supported.</li>
                     {% endif %}

@@ -1,0 +1,11 @@
+{% block content %}
+    <div class="container">
+        <h2> Delete {{ portfolio.currency }} Wallet</h2>
+        <h2> Are you sure you want to delete the {{ portfolio.currency }} wallet with address {{ portfolio.address }}?</h2>
+        <form method="post">
+            {% csrf_token %}
+            <input type="submit" value="Delete">
+            <button type="button" onclick="window.history.back()">Cancel</button>
+        </form>
+    </div>
+{% endblock %}
