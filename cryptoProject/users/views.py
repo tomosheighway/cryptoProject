@@ -11,6 +11,7 @@ from decimal import Decimal
 import json
 from datetime import datetime
 from django.http import JsonResponse
+import re
 
 def get_bitcoin_price():
     url = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=gbp'
@@ -24,9 +25,12 @@ def get_crypto_prices():
 
 # https://blockchain.info/rawaddr/{wallet_address}                alternataive endpoint 
 def get_bitcoin_balance(wallet_address):
+    if not re.match("^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$", wallet_address):
+        raise ValueError("Invalid Bitcoin address")
+
     url = f'https://api.blockcypher.com/v1/btc/main/addrs/{wallet_address}/balance'
     response = requests.get(url).json()
-    return response["final_balance"] / 100000000 
+    return response["final_balance"] / 100000000
 
     # value in satoshi  convert by div    e.g  = balance / 100000000
 # def get_bitcoin_balance():
@@ -103,12 +107,25 @@ def bitcoin_chart(request):
         data_list = [{'x': timestamp, 'y': price} for timestamp, price in zip(timestamps, prices_gbp)]
 
         # Return the data as a JSON response
-        print(data_list)
+        print({'data': data_list})
         return JsonResponse({'data': data_list})
         
 
     else:
         print(f"Error fetching data: {response.status_code}")
+
+
+def is_valid_btc_address(wallet_address):
+    if re.match("^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$", wallet_address):
+        return True
+    else:
+        return False
+
+def is_valid_eth_address(wallet_address):
+    if re.match("^0x[a-fA-F0-9]{40}$", wallet_address):
+        return True
+    else:
+        return False
 
 
 @login_required()
@@ -117,42 +134,59 @@ def graphs(request):
     return render(request, 'users/graphs.html')
 
 
-
-
 @login_required()
 def portfolio(request):
     if request.method == 'POST':
         wallet_address = request.POST.get('wallet_address')
         currency_name = request.POST.get('currency_name')
+
+        if currency_name.lower() == 'btc':
+            if not is_valid_btc_address(wallet_address):
+                messages.warning(request, 'Invalid Bitcoin wallet address.')
+                return redirect('portfolio')
+        elif currency_name.lower() == 'eth':
+            if not is_valid_eth_address(wallet_address):
+                messages.warning(request, 'Invalid Ethereum wallet address.')
+                return redirect('portfolio')
+        else:
+            messages.warning(request, 'Invalid currency selected.')
+            return redirect('portfolio')
+
         portfolio = Portfolio.objects.create(user=request.user, address=wallet_address, currency=currency_name)
         messages.success(request, 'Crypto wallet added successfully!')
-        print("Created succesfully")
+        print("Created successfully")
         return redirect('portfolio')
     else:
         portfolios = Portfolio.objects.filter(user=request.user)
-        # bitcoin_price = get_bitcoin_price()
         crypto_prices = get_crypto_prices()
         bitcoin_price = crypto_prices['bitcoin']['gbp']
         ethereum_price = crypto_prices['ethereum']['gbp']
 
-
         for portfolio in portfolios:
-            if portfolio.currency.lower() == "btc":
-                balance = get_bitcoin_balance(portfolio.address)
-                portfolio.balance = balance 
-                portfolio.value = balance * bitcoin_price
-            
-            elif portfolio.currency.lower() == "eth":
-                balance = get_ethereum_balance(portfolio.address)
-                if balance is not None:
-                    portfolio.balance = balance
-                    portfolio.value = balance * ethereum_price
+            if portfolio.currency.lower() == 'btc':
+                if is_valid_btc_address(portfolio.address):
+                    balance = get_bitcoin_balance(portfolio.address)
+                    portfolio.balance = balance 
+                    portfolio.value = balance * bitcoin_price
                 else:
-                    messages.warning(request, "Failed to get Ethereum balance.")
+                    messages.warning(request, 'A invalid Bitcoin wallet address has been found in your portfolio.')
+            elif portfolio.currency.lower() == 'eth':
+                if is_valid_eth_address(portfolio.address):
+                    balance = get_ethereum_balance(portfolio.address)
+                    if balance is not None:
+                        portfolio.balance = balance
+                        portfolio.value = balance * ethereum_price
+                    else:
+                        messages.warning(request, 'Failed to get Ethereum balance.')
+                else:
+                    messages.warning(request, 'A invalid Ethereum wallet address found in your  portfolio.')
             else:
                 messages.warning(request, f"{portfolio.currency} is not supported.")
-        
-    return render(request, 'users/portfolio.html', {'portfolios': portfolios})
+
+        return render(request, 'users/portfolio.html', {'portfolios': portfolios})
+
+
+
 
     # if request.method == 'POST':
     #     # Handle form submission
