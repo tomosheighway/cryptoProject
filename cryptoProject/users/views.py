@@ -83,7 +83,6 @@ def profile(request):
 
 
 def bitcoin_chart(request):
-    # Set up the API endpoint and parameters
     url = "https://api.coingecko.com/api/v3/coins/bitcoin/market_chart"
     params = {
         "vs_currency": "gbp",
@@ -96,22 +95,35 @@ def bitcoin_chart(request):
     if response.status_code == 200:
         data = json.loads(response.content)
 
-        # Extract the trading prices and timestamps from the response
         prices = data['prices']
         timestamps = [datetime.fromtimestamp(timestamp[0]/1000) for timestamp in prices]
         prices_gbp = [price[1] for price in prices]
-
-        # Create a list of dictionaries containing the timestamp and price data
         data_list = [{'x': timestamp, 'y': price} for timestamp, price in zip(timestamps, prices_gbp)]
-
-        # Return the data as a JSON response
-        print({'data': data_list})
+        # print({'data': data_list})
         return JsonResponse({'data': data_list})
         
 
     else:
         print(f"Error fetching data: {response.status_code}")
 
+def ethereum_chart(request): 
+    url = "https://api.coingecko.com/api/v3/coins/ethereum/market_chart"
+    params = {
+        "vs_currency": "gbp",
+        "days": "365",
+        "interval": "daily"
+    }
+    response = requests.get(url, params=params)
+    if response.status_code == 200:
+        data = json.loads(response.content)
+        prices = data['prices']
+        timestamps = [datetime.fromtimestamp(timestamp[0]/1000) for timestamp in prices]
+        prices_gbp = [price[1] for price in prices]
+        data_list = [{'x': timestamp, 'y': price} for timestamp, price in zip(timestamps, prices_gbp)]
+        # print({'data': data_list})
+        return JsonResponse({'data': data_list})
+    else:
+        print(f"Error fetching data: {response.status_code}")
 
 def is_valid_btc_address(wallet_address):
     if re.match("^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$", wallet_address):
@@ -129,6 +141,7 @@ def is_valid_eth_address(wallet_address):
 @login_required()
 def graphs(request):
     bitcoin_data = bitcoin_chart(request)
+    ethereum_data = ethereum_chart(request)
     return render(request, 'users/graphs.html')
 
 
@@ -137,6 +150,10 @@ def portfolio(request):
     if request.method == 'POST':
         wallet_address = request.POST.get('wallet_address')
         currency_name = request.POST.get('currency_name')
+
+        if Portfolio.objects.filter(user=request.user, address=wallet_address, currency=currency_name).exists():
+            messages.warning(request, f"The wallet address {wallet_address} already exists in your portfolio.")
+            return redirect('portfolio')
 
         if currency_name.lower() == 'btc':
             if not is_valid_btc_address(wallet_address):
@@ -159,13 +176,15 @@ def portfolio(request):
         crypto_prices = get_crypto_prices()
         bitcoin_price = crypto_prices['bitcoin']['gbp']
         ethereum_price = crypto_prices['ethereum']['gbp']
+        total_value = 0
 
         for portfolio in portfolios:
             if portfolio.currency.lower() == 'btc':
                 if is_valid_btc_address(portfolio.address):
                     balance = get_bitcoin_balance(portfolio.address)
                     portfolio.balance = balance 
-                    portfolio.value = balance * bitcoin_price
+                    portfolio.value = round(balance * bitcoin_price, 2)
+                    
                 else:
                     messages.warning(request, 'A invalid Bitcoin wallet address has been found in your portfolio.')
             elif portfolio.currency.lower() == 'eth':
@@ -173,15 +192,18 @@ def portfolio(request):
                     balance = get_ethereum_balance(portfolio.address)
                     if balance is not None:
                         portfolio.balance = balance
-                        portfolio.value = balance * ethereum_price
+                        portfolio.value = round(balance * ethereum_price, 2)
                     else:
                         messages.warning(request, 'Failed to get Ethereum balance.')
                 else:
                     messages.warning(request, 'A invalid Ethereum wallet address found in your  portfolio.')
             else:
                 messages.warning(request, f"{portfolio.currency} is not supported.")
+            
+            total_value += portfolio.value
+            #print("total" , total_value)
 
-        return render(request, 'users/portfolio.html', {'portfolios': portfolios})
+        return render(request, 'users/portfolio.html', {'portfolios': portfolios, 'total_value': total_value})
 
 def delete_portfolio(request, pk):
     portfolio = get_object_or_404(Portfolio, pk=pk, user=request.user)

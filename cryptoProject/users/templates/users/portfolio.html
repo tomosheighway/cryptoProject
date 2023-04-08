@@ -22,26 +22,73 @@
         </form>
 
         <h2>Your Portfolio</h2>
+        
         {% if portfolios %}
-            <ul>
+
+        <table>
+          <tr>
+            <th>Currency</th>
+            <th>Address</th>
+            <th>Balance</th>
+            <th>Value</th>
+            <th>Delete</th>
+          </tr>
                 {% for portfolio in portfolios %}
                     {% if portfolio.currency == 'btc' %}
-                        <li>{{ portfolio.currency }}: {{ portfolio.address }}     Balance: {{ portfolio.balance}}BTC.     Value: £{{ portfolio.value|floatformat:2 }} 
-                            <a href="{% url 'delete_portfolio' pk=portfolio.pk %}">Delete Wallet </a>
-                        </li>
+                    <tr>
+                        <td>{{ portfolio.currency|upper}}</td>
+                        <td>{{ portfolio.address }}</td>
+                        <td>{{ portfolio.balance }} BTC</td>
+                        <td>£{{ portfolio.value|floatformat:2 }}</td>
+                        <td><a href="{% url 'delete_portfolio' pk=portfolio.pk %}">X</a></td>
+                    </tr>
                     {% elif portfolio.currency == 'eth' %}
-                        <li>{{ portfolio.currency }}: {{ portfolio.address }}     Balance: {{ portfolio.balance }}ETH.  Value: £{{ portfolio.value|floatformat:2 }}
-                            <a href="{% url 'delete_portfolio' pk=portfolio.pk %}">Delete Wallet</a>
-                        </li>
-
+                    <tr>
+                        <td>{{ portfolio.currency|upper }}</td>
+                        <td>{{ portfolio.address }}</td>
+                        <td>{{ portfolio.balance }} ETH</td>
+                        <td>£{{ portfolio.value|floatformat:2 }}</td>
+                        <td><a href="{% url 'delete_portfolio' pk=portfolio.pk %}">X</a></td>
+                    </tr>
                     {% else %}
-                        <li>{{ portfolio.currency }}: {{ portfolio.address }} is not supported.</li>
+                    <tr>
+                        <td>{{ portfolio.currency|upper }}</td>
+                        <td>{{ portfolio.address }}</td>
+                        <td colspan="3">{{ portfolio.currency }} is not supported.</td>
+                    </tr>
                     {% endif %}
                 {% endfor %}
-            </ul>
-        {% else %}
-            <p>You don't have any portfolios yet.</p>
-        {% endif %}
+          <tr>
+            <td colspan="3"></td>
+            <td style="text-align: right;">Total: £ {{total_value|floatformat:2}}</td>
+            <td></td>
+          </tr>
+        </table>
+      {% else %}
+        <p>You don't have any portfolios yet.</p>
+      {% endif %}
+
+
+        <style>
+            table {
+            border-collapse: collapse;
+            width: 100%;
+            }
+        
+            th, td {
+            text-align: left;
+            padding: 8px;
+            border: 1px solid #ddd;
+            }
+        
+            th {
+            background-color: #f2f2f2;
+            }
+        
+            tr:nth-child(even) {
+            background-color: #f2f2f2;
+            }
+        </style>
     </div>
 {% endblock %}
 
