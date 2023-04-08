@@ -86,7 +86,7 @@ def bitcoin_chart(request):
     url = "https://api.coingecko.com/api/v3/coins/bitcoin/market_chart"
     params = {
         "vs_currency": "gbp",
-        "days": "365",
+        "days": "max",
         "interval": "daily"
     }
 
@@ -96,10 +96,11 @@ def bitcoin_chart(request):
         data = json.loads(response.content)
 
         prices = data['prices']
-        timestamps = [datetime.fromtimestamp(timestamp[0]/1000) for timestamp in prices]
+        timestamps = [datetime.fromtimestamp(timestamp[0]/1000).strftime('%d/%m/%Y') for timestamp in prices]
+        # timestamps = [datetime.fromtimestamp(timestamp[0]/1000).strftime('%d-%m-%Y %H:%M') for timestamp in prices]
         prices_gbp = [price[1] for price in prices]
         data_list = [{'x': timestamp, 'y': price} for timestamp, price in zip(timestamps, prices_gbp)]
-        # print({'data': data_list})
+        print({'data': data_list})
         return JsonResponse({'data': data_list})
         
 
@@ -110,14 +111,14 @@ def ethereum_chart(request):
     url = "https://api.coingecko.com/api/v3/coins/ethereum/market_chart"
     params = {
         "vs_currency": "gbp",
-        "days": "365",
+        "days": "max",
         "interval": "daily"
     }
     response = requests.get(url, params=params)
     if response.status_code == 200:
         data = json.loads(response.content)
         prices = data['prices']
-        timestamps = [datetime.fromtimestamp(timestamp[0]/1000) for timestamp in prices]
+        timestamps = [datetime.fromtimestamp(timestamp[0]/1000).strftime('%d/%m/%Y') for timestamp in prices]
         prices_gbp = [price[1] for price in prices]
         data_list = [{'x': timestamp, 'y': price} for timestamp, price in zip(timestamps, prices_gbp)]
         # print({'data': data_list})
@@ -142,7 +143,7 @@ def is_valid_eth_address(wallet_address):
 def graphs(request):
     bitcoin_data = bitcoin_chart(request)
     ethereum_data = ethereum_chart(request)
-    return render(request, 'users/graphs.html')
+    return render(request, 'users/graphs.html' , {'bitcoin_data': bitcoin_data, 'ethereum_data': ethereum_data})
 
 
 @login_required()
