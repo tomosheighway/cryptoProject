@@ -19,7 +19,9 @@
     }
 </style>
     
-<p> *These graphs are powered by data from coingeko and are set to refresh every hour</p>
+<p> These graphs are powered by data from coingeko.</p>
+<p> Please respect fair use and keep requests to a minimum.</p>
+<p> If you breach the fair use policy you will be warned and have a timeout period.</p>
 <div class="stats-container container">
     <h1>Stats</h1>
     <p> These stats are powered by data from coingeko and update every time the page refreshes.</p>
@@ -29,7 +31,7 @@
     <p>24hour High £{{ crypto_stats.bitcoin.high_24h }} </p>  
     <p>24hour low £{{ crypto_stats.bitcoin.low_24h }} </p>  
     <p>Price change in last 24hours £{{ crypto_stats.bitcoin.price_change_24h|floatformat:2 }} </p>  
-    <p>Price change in last 24hours £{{ crypto_stats.bitcoin.price_change_percentage_24h |floatformat:2}} %</p> 
+    <p>Percentage change in last 24hours {{ crypto_stats.bitcoin.price_change_percentage_24h |floatformat:2}} %</p> 
 
     <h2>Here are some stats about Ethereum </h2> 
     <p>Current price £{{ crypto_stats.ethereum.current_price }} </p>  
@@ -37,21 +39,63 @@
     <p>24hour High £{{ crypto_stats.ethereum.high_24h }} </p>  
     <p>24hour low £{{ crypto_stats.ethereum.low_24h }} </p>  
     <p>Price change in last 24hours £{{ crypto_stats.ethereum.price_change_24h|floatformat:2 }} </p>  
-    <p>Price change in last 24hours {{ crypto_stats.ethereum.price_change_percentage_24h|floatformat:2 }} %</p>  
+    <p>Percentage change in last 24hours {{ crypto_stats.ethereum.price_change_percentage_24h|floatformat:2 }} %</p>  
 </div>    
 <div class="graph-container container">
     <h1>Bitcoin Price Chart</h1>
+    <div>
+        <label for="days-select-btc">BTC Timeframe:</label>
+        <select id="days-select-btc">
+            <option value="0.04166666667">1 hour</option>
+            <option value="0.5">12 hour</option>
+            <option value="1">1 day</option>
+            <option value="7">7 days</option>
+            <option value="30">30 days</option>
+            <option value="90">90 days</option>
+            <option value="365"selected>1 year</option>
+            <option value="max">Max</option>
+        </select>
+    
+        <label for="interval-select-btc">BTC Interval:</label>
+        <select id="interval-select-btc">
+            <option value="minute">Minute</option>
+            <option value="hourly">Hour</option>
+            <option value="daily"selected>Day</option>
+            <!-- <option value="weekly">Week</option>
+            <option value="monthly">Month</option> -->
+        </select>
+        <button id="update-button-btc">Update BTC Chart</button>
+    </div>
     <canvas id="bitcoin-chart"></canvas>
 </div>
     
 <div class="graph-container container">
     <h1>Ethereum Price Chart</h1>
+    <div>
+        <label for="days-select-eth">ETH Timeframe:</label>
+        <select id="days-select-eth">
+            <option value="0.04166666667">1 hour</option>
+            <option value="0.5">12 hour</option>
+            <option value="1">1 day</option>
+            <option value="7">7 days</option>
+            <option value="30">30 days</option>
+            <option value="90">90 days</option>
+            <option value="365"selected>1 year</option>
+            <option value="max">Max</option>
+        </select>
+    
+        <label for="interval-select-eth">ETH Interval:</label>
+        <select id="interval-select-eth">
+            <option value="minute">Minute</option>
+            <option value="hourly">Hour</option>
+            <option value="daily"selected>Day</option>
+        </select>
+        <button id="update-button-eth">Update ETH Chart</button>
+    </div>
     <canvas id="ethereum-chart"></canvas>
 </div>
-    
 
-    
-  
+
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@1.1.1/dist/chartjs-plugin-zoom.min.js"></script>
@@ -136,6 +180,31 @@ var eth_chart = new Chart(eth_ctx, {
         }
     }  
 });
+
+document.getElementById('update-button-btc').addEventListener('click', update_btc_chart);
+document.getElementById('update-button-eth').addEventListener('click', update_eth_chart);
+
+function update_btc_chart() {
+    const days = document.getElementById('days-select-btc').value;
+    const interval = document.getElementById('interval-select-btc').value;
+    fetch(`/bitcoin-chart/?days=${days}&interval=${interval}`)
+    .then(response => response.json())
+    .then(data => {
+        btc_chart.data.datasets[0].data = data.data;
+        btc_chart.update();
+    });
+}
+
+function update_eth_chart() {
+    const days = document.getElementById('days-select-eth').value;
+    const interval = document.getElementById('interval-select-eth').value;
+    fetch(`/ethereum-chart/?days=${days}&interval=${interval}`)
+    .then(response => response.json())
+    .then(data => {
+        eth_chart.data.datasets[0].data = data.data;
+        eth_chart.update();
+    });
+}
 
 function fetch_btc_data() {
     fetch('/bitcoin-chart/')

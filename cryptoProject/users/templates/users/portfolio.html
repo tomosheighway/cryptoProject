@@ -32,6 +32,7 @@
                 <th>Address</th>
                 <th>Balance</th>
                 <th>Value</th>
+                <th> Daily % change</th>
                 <th>Delete</th>
             </tr>
                     {% for portfolio in portfolios %}
@@ -41,6 +42,9 @@
                             <td>{{ portfolio.address }}</td>
                             <td>{{ portfolio.balance }} BTC</td>
                             <td>£{{ portfolio.value|floatformat:2 }}</td>
+                            <td style="{% if crypto_stats.bitcoin.price_change_percentage_24h >= 0 %}color:green;{% else %}color:red;{% endif %}">
+                                {{ crypto_stats.bitcoin.price_change_percentage_24h |floatformat:2 }}%
+                            </td>
                             <td><a href="{% url 'delete_portfolio' pk=portfolio.pk %}">X</a></td>
                         </tr>   
                         {% elif portfolio.currency == 'eth' %}
@@ -49,6 +53,9 @@
                             <td>{{ portfolio.address }}</td>
                             <td>{{ portfolio.balance }} ETH</td>
                             <td>£{{ portfolio.value|floatformat:2 }}</td>
+                            <td style="color: {% if crypto_stats.ethereum.price_change_percentage_24h >= 0 %}green{% else %}red{% endif %}">
+                                {{ crypto_stats.ethereum.price_change_percentage_24h|floatformat:2 }}%
+                            </td>
                             <td><a href="{% url 'delete_portfolio' pk=portfolio.pk %}">X</a></td>
                         </tr>
                         {% else %}

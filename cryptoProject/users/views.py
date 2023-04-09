@@ -86,47 +86,48 @@ def profile(request):
 
 
 def bitcoin_chart(request):
+    days = request.GET.get('days' , '365')
+    interval = interval = request.GET.get('interval', 'daily')
     url = "https://api.coingecko.com/api/v3/coins/bitcoin/market_chart"
     params = {
         "vs_currency": "gbp",
-        "days": "max",
-        "interval": "daily"
+        "days": days,
+        "interval": interval
     }
-
     response = requests.get(url, params=params)
-
     if response.status_code == 200:
         data = json.loads(response.content)
-
         prices = data['prices']
-        timestamps = [datetime.fromtimestamp(timestamp[0]/1000).strftime('%d/%m/%Y') for timestamp in prices]
-        # timestamps = [datetime.fromtimestamp(timestamp[0]/1000).strftime('%d-%m-%Y %H:%M') for timestamp in prices]
+        #timestamps = [datetime.fromtimestamp(timestamp[0]/1000).strftime('%d/%m/%Y') for timestamp in prices]
+        timestamps = [datetime.fromtimestamp(timestamp[0]/1000).strftime('%d-%m-%Y %H:%M') for timestamp in prices]
         prices_gbp = [price[1] for price in prices]
         data_list = [{'x': timestamp, 'y': price} for timestamp, price in zip(timestamps, prices_gbp)]
         #print({'data': data_list})
         return JsonResponse({'data': data_list})
-        
-
     else:
+        messages.warning(request, "You are making too many requests to the api. Please wait 60 seconds then retry")
         print(f"Error fetching data: {response.status_code}")
 
 def ethereum_chart(request): 
+    days = request.GET.get('days' , '365')
+    interval = interval = request.GET.get('interval', 'daily')
     url = "https://api.coingecko.com/api/v3/coins/ethereum/market_chart"
     params = {
         "vs_currency": "gbp",
-        "days": "max",
-        "interval": "daily"
+        "days": days,
+        "interval": interval
     }
     response = requests.get(url, params=params)
     if response.status_code == 200:
         data = json.loads(response.content)
         prices = data['prices']
-        timestamps = [datetime.fromtimestamp(timestamp[0]/1000).strftime('%d/%m/%Y') for timestamp in prices]
+        timestamps = [datetime.fromtimestamp(timestamp[0]/1000).strftime('%d-%m-%Y %H:%M') for timestamp in prices]
         prices_gbp = [price[1] for price in prices]
         data_list = [{'x': timestamp, 'y': price} for timestamp, price in zip(timestamps, prices_gbp)]
         # print({'data': data_list})
         return JsonResponse({'data': data_list})
     else:
+        messages.warning(request, "You are making too many requests to the api. Please wait 60 seconds then retry")
         print(f"Error fetching data: {response.status_code}")
 
 def is_valid_btc_address(wallet_address):
@@ -152,6 +153,7 @@ def graphs(request):
 
 @login_required()
 def portfolio(request):
+    crypto_stats = get_crypto_details()
     if request.method == 'POST':
         wallet_address = request.POST.get('wallet_address')
         currency_name = request.POST.get('currency_name')
@@ -208,7 +210,7 @@ def portfolio(request):
             total_value += portfolio.value
             #print("total" , total_value)
 
-        return render(request, 'users/portfolio.html', {'portfolios': portfolios, 'total_value': total_value})
+        return render(request, 'users/portfolio.html', {'portfolios': portfolios, 'total_value': total_value, 'crypto_stats': crypto_stats})
 
 def delete_portfolio(request, pk):
     portfolio = get_object_or_404(Portfolio, pk=pk, user=request.user)
