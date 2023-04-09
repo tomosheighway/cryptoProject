@@ -11,10 +11,24 @@ from datetime import datetime
 from django.http import JsonResponse
 import re
 
-def get_bitcoin_price():
-    url = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=gbp'
+import requests
+
+def get_crypto_details():
+    url = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=gbp&ids=bitcoin%2Cethereum&order=market_cap_desc&per_page=5&page=1&sparkline=false&locale=en'
     response = requests.get(url).json()
-    return response['bitcoin']['gbp']
+
+    result = {}
+    for coin in response:
+        result[coin['id']] = {
+            'current_price': coin['current_price'],
+            'market_cap': coin['market_cap'],
+            'high_24h': coin['high_24h'],
+            'low_24h': coin['low_24h'],
+            'price_change_24h': coin['price_change_24h'],
+            'price_change_percentage_24h': coin['price_change_percentage_24h']
+        }
+
+    return result
 
 def get_crypto_prices():
     url = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=gbp'
@@ -25,18 +39,9 @@ def get_crypto_prices():
 def get_bitcoin_balance(wallet_address):
     if not re.match("^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$", wallet_address):
         raise ValueError("Invalid Bitcoin address")
-
     url = f'https://api.blockcypher.com/v1/btc/main/addrs/{wallet_address}/balance'
     response = requests.get(url).json()
     return response["final_balance"] / 100000000
-
-    # value in satoshi  convert by div    e.g  = balance / 100000000
-# def get_bitcoin_balance():
-#     url = 'https://api.blockcypher.com/v1/btc/main/addrs/16ftSEQ4ctQFDtVZiUBusQUjRrGhM3JYwe/balance'
-#     # https://blockchain.info/rawaddr/16ftSEQ4ctQFDtVZiUBusQUjRrGhM3JYwe
-#     response = requests.get(url).json()
-#     print(response) 
-#     return response["final_balance"]
 
 def get_ethereum_balance(wallet_address):
     payload = {
@@ -46,21 +51,19 @@ def get_ethereum_balance(wallet_address):
         "params": [wallet_address, "latest"]
     }
     response = requests.post("https://mainnet.infura.io/v3/abf01257db754eb0ac8234697a7a414d", json=payload)
-    response.raise_for_status()  # raise an exception if the HTTP request failed
+    response.raise_for_status()
     balance_wei = int(response.json()['result'], 16)
-        # convert the balance to Ether
     balance_eth = balance_wei / 10**18
-    print(balance_eth)  # print the balance to the console
     return balance_eth
     
 
 
 def home(request):
-    temp_wallet = "16ftSEQ4ctQFDtVZiUBusQUjRrGhM3JYwe"
-    bitcoin_price = get_bitcoin_price()
-    # bitcoin_balance = get_bitcoin_balance(temp_wallet)
-    return render(request, 'users/home.html', {'bitcoin_price': bitcoin_price})
-    #return render(request, 'users/home.html', {'bitcoin_price': bitcoin_price, 'bitcoin_balance': bitcoin_balance})
+    crypto_prices = get_crypto_prices()
+    bitcoin_price = crypto_prices['bitcoin']['gbp']
+    ethereum_price = crypto_prices['ethereum']['gbp']
+    return render(request, 'users/home.html', {'bitcoin_price': bitcoin_price, 'ethereum_price': ethereum_price})
+    
 
 
 def register(request):
@@ -100,7 +103,7 @@ def bitcoin_chart(request):
         # timestamps = [datetime.fromtimestamp(timestamp[0]/1000).strftime('%d-%m-%Y %H:%M') for timestamp in prices]
         prices_gbp = [price[1] for price in prices]
         data_list = [{'x': timestamp, 'y': price} for timestamp, price in zip(timestamps, prices_gbp)]
-        print({'data': data_list})
+        #print({'data': data_list})
         return JsonResponse({'data': data_list})
         
 
@@ -141,9 +144,10 @@ def is_valid_eth_address(wallet_address):
 
 @login_required()
 def graphs(request):
+    crypto_stats = get_crypto_details()
     bitcoin_data = bitcoin_chart(request)
     ethereum_data = ethereum_chart(request)
-    return render(request, 'users/graphs.html' , {'bitcoin_data': bitcoin_data, 'ethereum_data': ethereum_data})
+    return render(request, 'users/graphs.html' , {'bitcoin_data': bitcoin_data, 'ethereum_data': ethereum_data, 'crypto_stats': crypto_stats})
 
 
 @login_required()
@@ -210,24 +214,20 @@ def delete_portfolio(request, pk):
     portfolio = get_object_or_404(Portfolio, pk=pk, user=request.user)
     if request.method == 'POST':
         portfolio.delete()
+        messages.success(request, 'A wallet address has been deleted ')
         return redirect('portfolio')
     return render(request, 'users/delete_portfolio.html', {'portfolio': portfolio})
 
 
-    # if request.method == 'POST':
-    #     # Handle form submission
-    #     currency = request.POST.get('currency_name')
-    #     wallet_address = request.POST.get('btc_address')
+@login_required
+def delete_account(request):
+    if request.method == 'POST':
+        request.user.delete() 
+        messages.success(request, 'Your account has been deleted.')
+        return redirect('home')
+    else:
+        return render(request, 'users/delete_user.html')
 
-    #     if currency:
-    #         Portfolio.object.create(user=request.user , currency=currency , address=wallet_address)
-    #         print("data saved")
-            
-
-    # else:
-    #     print("oops")
-    #     # portfolio_objs =  Portfolio.object.filter(user=request.user)
-    #     # wallet_list =[]
-        
-
-
+@login_required
+def delete_user(request):
+    return render(request, 'users/delete_user.html')

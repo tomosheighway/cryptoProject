@@ -1,17 +1,57 @@
 {% extends 'users/base.html' %}
-{% load crispy_forms_tags %}
 
 {% block content %}
-<div class="container" style="width: 50%; height: 50%;">
+<style>
+    .container {
+      display: inline-block;
+      width: 40%;
+      height: 50%;
+      vertical-align: top;
+    }
+    
+    .graph-container {
+        width: 50%;
+    }
+    
+    .stats-container {
+      float: right;
+      vertical-align: top;
+    }
+</style>
+    
+<p> *These graphs are powered by data from coingeko and are set to refresh every hour</p>
+<div class="stats-container container">
+    <h1>Stats</h1>
+    <p> These stats are powered by data from coingeko and update every time the page refreshes.</p>
+    <h2>Here are some stats about Bitcoin </h2> 
+    <p>Current price £{{ crypto_stats.bitcoin.current_price }} </p>  
+    <p>Market cap £{{ crypto_stats.bitcoin.market_cap }} </p>    
+    <p>24hour High £{{ crypto_stats.bitcoin.high_24h }} </p>  
+    <p>24hour low £{{ crypto_stats.bitcoin.low_24h }} </p>  
+    <p>Price change in last 24hours £{{ crypto_stats.bitcoin.price_change_24h|floatformat:2 }} </p>  
+    <p>Price change in last 24hours £{{ crypto_stats.bitcoin.price_change_percentage_24h |floatformat:2}} %</p> 
+
+    <h2>Here are some stats about Ethereum </h2> 
+    <p>Current price £{{ crypto_stats.ethereum.current_price }} </p>  
+    <p>Market cap £{{ crypto_stats.ethereum.market_cap }} </p>    
+    <p>24hour High £{{ crypto_stats.ethereum.high_24h }} </p>  
+    <p>24hour low £{{ crypto_stats.ethereum.low_24h }} </p>  
+    <p>Price change in last 24hours £{{ crypto_stats.ethereum.price_change_24h|floatformat:2 }} </p>  
+    <p>Price change in last 24hours {{ crypto_stats.ethereum.price_change_percentage_24h|floatformat:2 }} %</p>  
+</div>    
+<div class="graph-container container">
     <h1>Bitcoin Price Chart</h1>
-    <!-- <h2>{{ user.username }}</h2> -->
     <canvas id="bitcoin-chart"></canvas>
 </div>
-
-<div class="container" style="width: 50%; height: 50%;">
+    
+<div class="graph-container container">
     <h1>Ethereum Price Chart</h1>
     <canvas id="ethereum-chart"></canvas>
 </div>
+    
+
+    
+  
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@1.1.1/dist/chartjs-plugin-zoom.min.js"></script>
@@ -47,7 +87,7 @@ var btc_chart = new Chart(btc_ctx, {
                 title: {
                     display: true,
                     text: 'Time'
-                }
+                },     
             },
             y: {
                 title: {

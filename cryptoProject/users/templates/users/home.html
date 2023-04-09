@@ -3,17 +3,45 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-	<h1>Home page for crypto portfolio app </h1>
-	<p>This is the home page.</p>
-	<p>The live price of Bitcoin is: £{{ bitcoin_price }}</p>
-	<!-- <p>The live balance of Bitcoin address is : {{ bitcoin_balance}} BTC</p> -->
+    <div class="home-page">
+        <h1 class="display-4">Track Your Crypto Portfolio</h1>
+        <p class="lead">Enter your crypto wallet addresses and get real time updates its balance and value.</p>
+        <p class="lead">View the entire value of all of your accounts</p>
+        <p class="lead">View live price graphs and stats for major cyrptocurrencies</p>
+        <hr class="my-4">
+        <a class="btn btn-primary btn-lg" href="{% url 'register' %}" role="button">Get Started Now</a>
+        
 
-{% endblock %}
+    </div>
 
-{% block script %}  <!-- no currently working test-->
-    <script>
-        setInterval(function() {
-            location.reload();
-        }, 30000);
-    </script>
+
+    <div class="btc-card">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4 class="mb-0">Live Bitcoin Price</h4>
+            </div>
+            <div class="card-body">
+                <h2 class="card-title">£{{ bitcoin_price }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="eth-card">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4 class="mb-0">Ethereum Price</h4>
+            </div>
+            <div class="card-body">
+                <h2 class="card-title">£{{ ethereum_price }}</h2>
+            </div>
+        </div>
+    </div>
+   
+
+    <div class="info-card">
+        <h3> Project Info</h3>
+        <p> This is a dissertation project to create a crypto portfolio site</p>
+        <p> The site has been built using the django framework</p>
+        <p> By Tomos Heighway</p>
+    </div>
 {% endblock %}

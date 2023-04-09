@@ -15,7 +15,7 @@ nav a {
 
 /* Style the login and register buttons */
 .btn {
-	background-color: #4CAF50; /* Green */
+	background-color: #007bff; /* Green */
 	border: none;
 	color: rgb(255, 255, 255);
 	padding: 10px 24px;
@@ -27,6 +27,10 @@ nav a {
 	cursor: pointer;
 }
 
+.btn:hover {
+	background-color: #3e9e41;
+	border-color: #4CAF50;
+}
 
 /* Add this code to your main.css file */
 body {
@@ -93,4 +97,132 @@ body {
 	color: #4CAF50;
 	text-decoration: none;
 	font-weight: bold;
+}
+
+.stats-container {
+    height: 100%;
+	width: 50%;
+    background-color: #ffffff;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 5px;
+	float: right;
+    vertical-align: top;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+.graph-container {
+	height: 100%;
+	width: 50%;
+    background-color: #ffffff;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 5px;
+	float: left;
+    vertical-align: top;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+.table-container {
+	height: 100%;
+	width: 50%;
+    background-color: #ffffff;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 5px;
+	float: left;
+    vertical-align: top;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+.home-page {
+	background-color: #f8f9fa;
+	text-align: center;
+	padding-top: 80px;
+	padding-bottom: 80px;
+}
+.heading {
+	background-color: #f8f9fa;
+	text-align: center;
+	padding-top: 80px;
+	padding-bottom: 80px;
+}
+
+.btc-card {
+	margin-bottom: 30px;
+	height: 100%;
+	background-color: #ffffff;
+	padding: 20px;
+	margin: 20px;
+	margin-right: 20px;
+	width: calc(33.33% - 10px);
+	border-radius: 5px;
+	vertical-align: top;
+	float: left;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+	max-width: 500px;
+}
+.eth-card {
+	margin-bottom: 30px;
+	height: 100%;
+	background-color: #ffffff;
+	padding: 20px;
+	margin: 20px;
+	margin-left: 20px;
+	width: calc(33.33% - 10px);
+	float: right;
+	border-radius: 5px;
+	vertical-align: top;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+	
+	max-width: 500px;
+}
+.info-card{
+	text-align: center;
+	margin: 30px auto;
+	padding: 20px;
+	display: block;
+	width: calc(33.33% - 40px);
+	background-color: #ffffff;
+	border-radius: 5px;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+
+@media screen and (max-width: 767px) {
+	.btc-card, .eth-card {
+	  width: 100%;
+	  float: none;
+	  margin: 0;
+	  margin-bottom: 30px;
+	}
+  }
+.card-header {
+	background-color: #000000;
+	color: #fff;
+}
+
+.card-title {
+	font-size: 48px;
+	font-weight: 700;
+}
+
+.card-text {
+	font-size: 18px;
+}
+
+.btn-primary {
+	background-color: #007bff;
+	border-color: #007bff;
+	font-weight: 600;
+}
+
+.btn-primary:hover {
+	background-color: #3e9e41;
+	border-color: #4CAF50;
+}
+
+.btn-danger{
+	background-color: #ff0000;
+	border-color: #f02c2c;
 }

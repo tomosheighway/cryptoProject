@@ -1,11 +1,17 @@
-
 {% extends 'users/base.html' %}
-{% load crispy_forms_tags %}
-
-
 {% block content%}
+    <div class="heading">
+        <h1 class="display-4">Profile</h1>
+        <p> On this page you can view your username and contact email</p>
+        <p> If you remove your user and all assosciated data / portfolios you can also do so using the delete button.</p>
+        <hr class="my-4">
+        
+    </div>
     <div class="container">
-        <h2> {{user.username}}</h2>
-        <h2> {{user.email}}</h2>
+        <h2> Your username: {{user.username}}</h2>
+        <h2> Your contact email: {{user.email}}</h2>
+        <a href="{% url 'logout' %}" class="btn">Logout</a>
+        <a href="{% url 'delete_user' %}" class="btn btn-danger">Delete Account</a>
+        
     </div>
 {%endblock%}
