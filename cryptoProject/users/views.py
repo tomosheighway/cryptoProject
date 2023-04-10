@@ -11,22 +11,26 @@ from datetime import datetime
 from django.http import JsonResponse
 import re
 import time
-
-import requests
+from django.core.cache import cache
 
 cache = {}
 timestamp = 0
+counter = 0
 
 def get_crypto_details():
     global cache
     global timestamp
+    global counter
     
     if time.time() - timestamp < 300 and 'crypto_details' in cache: # less than 5 mins 
         print("using data from cache get_crypto_detials")
+        print(cache)
         return cache['crypto_details']
     
     try:
         print("New data")
+        counter = counter+1
+        print(counter, "get details")
         url = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=gbp&ids=bitcoin%2Cethereum&order=market_cap_desc&per_page=5&page=1&sparkline=false&locale=en'
         response = requests.get(url)
         response.raise_for_status() 
@@ -53,7 +57,10 @@ def get_crypto_details():
         print(f"An error occurred while fetching data from Coingecko API: {e}")
         return None
 
-def get_crypto_prices():            # potential to move to just other function and use cached values
+def get_crypto_prices():  
+    global counter 
+    counter = counter+1
+    print(counter, "get prices")          # potential to move to just other function and use cached values
     url = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=gbp'
     response = response = requests.get(url).json()
     return response
@@ -108,6 +115,9 @@ def profile(request):
 
 
 def bitcoin_chart(request):
+    global counter 
+    counter = counter+1
+    print(counter, "btc chart")
     days = request.GET.get('days' , '365')
     interval = interval = request.GET.get('interval', 'daily')
     url = "https://api.coingecko.com/api/v3/coins/bitcoin/market_chart"
@@ -131,7 +141,10 @@ def bitcoin_chart(request):
         print(f"Error fetching data: {response.status_code}")
         time.sleep(45)
 
-def ethereum_chart(request): 
+def ethereum_chart(request):
+    global counter 
+    counter = counter+1
+    print(counter, "eth chart") 
     days = request.GET.get('days' , '365')
     interval = interval = request.GET.get('interval', 'daily')
     url = "https://api.coingecko.com/api/v3/coins/ethereum/market_chart"
@@ -169,9 +182,11 @@ def is_valid_eth_address(wallet_address):
 @login_required()
 def graphs(request):
     crypto_stats = get_crypto_details()
-    bitcoin_data = bitcoin_chart(request)
-    ethereum_data = ethereum_chart(request)
-    return render(request, 'users/graphs.html' , {'bitcoin_data': bitcoin_data, 'ethereum_data': ethereum_data, 'crypto_stats': crypto_stats})
+    # to try and reduce api calls - the data is still called in the graphs page with a fetch 
+    # bitcoin_data = bitcoin_chart(request)
+    # ethereum_data = ethereum_chart(request)
+    # return render(request, 'users/graphs.html' , {'bitcoin_data': bitcoin_data, 'ethereum_data': ethereum_data, 'crypto_stats': crypto_stats})
+    return render(request, 'users/graphs.html' , {'crypto_stats': crypto_stats})
 
 
 @login_required()
@@ -203,9 +218,11 @@ def portfolio(request):
         return redirect('portfolio')
     else:
         portfolios = Portfolio.objects.filter(user=request.user)
-        crypto_prices = get_crypto_prices()
-        bitcoin_price = crypto_prices['bitcoin']['gbp']
-        ethereum_price = crypto_prices['ethereum']['gbp']
+        #crypto_prices = get_crypto_prices()
+        # bitcoin_price = crypto_prices['bitcoin']['gbp']
+        # ethereum_price = crypto_prices['ethereum']['gbp']
+        bitcoin_price = crypto_stats['bitcoin']['current_price']
+        ethereum_price = crypto_stats['ethereum']['current_price']
         total_value = 0
 
         for portfolio in portfolios:
