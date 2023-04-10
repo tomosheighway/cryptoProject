@@ -15,7 +15,6 @@ nav a:hover {
 	background-color: #555;
 }
 
-
 .btn {
 	background-color: #007bff; 
 	border: none;
@@ -56,7 +55,7 @@ body {
 	background-color: #f2f2f2;
 }
 
-/* Register page */
+/* ---------------Register page-------------- */
 .register-container {
 	background-color: #ffffff;
 	border-radius: 5px;
@@ -72,7 +71,7 @@ body {
     border-radius: 10px;
     padding: 30px;
 }
-/* Login page */
+/* --------------Login page---------------- */
 .login-container {
 	background-color: #ffffff;
 	border-radius: 5px;
@@ -83,8 +82,6 @@ body {
 	vertical-align: top;
 	align-items: center;
 	justify-content: center;
-	
-	
 }
 .login-form {
     width: 100%;
@@ -92,7 +89,8 @@ body {
     border-radius: 10px;
     padding: 30px;
 }
-/* Graph page ---------------- */
+
+/*-------------- Graph page ---------------- */
 .graphs-page {
 	background-color: #f8f9fa;
 	text-align: center;
@@ -124,7 +122,6 @@ body {
 	width: 10%;
 	max-width: 85%; 
 }
-
 
 .graph-container {
 	background-color: #ffffff;
@@ -164,7 +161,7 @@ body {
 }
 
 
-/* Portfolio page  */
+/*------------ Portfolio page--------- */
 .portfolio-page {
 	background-color: #f8f9fa;
 	text-align: center;
@@ -239,8 +236,7 @@ body {
 	overflow-x: auto;
 	margin: 0 auto;
 	max-width: 100%;
-	overflow-y: hidden;
-	
+	overflow-y: hidden;	
 }
   
 .portfolio-table th,
@@ -286,27 +282,17 @@ body {
 	}
 }
 
-/* ------- */
-.table-container {
-	height: 100%;
-	width: 50%;
-    background-color: #ffffff;
-    padding: 20px;
-    margin: 20px;
-    border-radius: 5px;
-	float: left;
-    vertical-align: top;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-}
-
-
-.heading {
-	background-color: #f8f9fa;
-	text-align: center;
-	padding-top: 80px;
-	padding-bottom: 80px;
-}
 /* Home page ---------- */
+.messages-container{
+	text-align: center;
+	height: 100%;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	max-height: 200px;
+	font-size: 20px;
+	background-color: #ffffff;
+}
+
 .home-page {
 	background-color: #f8f9fa;
 	text-align: center;
@@ -316,9 +302,9 @@ body {
 .card-container {
 	display: flex;
 	flex-wrap: wrap;
-  }
+}
   
-  .btc-card, .eth-card {
+.btc-card, .eth-card {
 	margin-bottom: 30px;
 	height: 100%;
 	max-height: 160px;
@@ -334,12 +320,10 @@ body {
 	text-align: center;
 	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
 	max-width: 500px;
-	
-  }
+}
 
-  .info-card {
+.info-card {
 	text-align: center;
-	
 	height: 100%;
 	max-height: 200px;
 	background-color: #ffffff;
@@ -354,17 +338,17 @@ body {
 	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
 	max-width: 500px;
 	display: block;
-  }
+}
   
-  .btc-card {
+.btc-card {
 	margin-right: 20px;
 	float: left;
-  }
-  
-  .eth-card {
+	}
+
+.eth-card {
 	margin-left: 20px;
 	float: right;
-  }
+}
 
 @media screen and (max-width: 1600px) {
 	.btc-card, .eth-card , .info-card {
@@ -392,12 +376,4 @@ body {
 
 /* ----------------- */
 
-.messages-container{
-	text-align: center;
-	height: 100%;
-	padding-top: 10px;
-	padding-bottom: 10px;
-	max-height: 200px;
-	font-size: 20px;
-	background-color: #ffffff;
-}
+

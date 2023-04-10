@@ -10,25 +10,32 @@ import json
 from datetime import datetime
 from django.http import JsonResponse
 import re
+import time
 
 import requests
 
 def get_crypto_details():
-    url = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=gbp&ids=bitcoin%2Cethereum&order=market_cap_desc&per_page=5&page=1&sparkline=false&locale=en'
-    response = requests.get(url).json()
-
-    result = {}
-    for coin in response:
-        result[coin['id']] = {
-            'current_price': coin['current_price'],
-            'market_cap': coin['market_cap'],
-            'high_24h': coin['high_24h'],
-            'low_24h': coin['low_24h'],
-            'price_change_24h': coin['price_change_24h'],
-            'price_change_percentage_24h': coin['price_change_percentage_24h']
-        }
-
-    return result
+    try:
+        url = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=gbp&ids=bitcoin%2Cethereum&order=market_cap_desc&per_page=5&page=1&sparkline=false&locale=en'
+        response = requests.get(url)
+        response.raise_for_status() 
+        data = response.json()
+        
+        result = {}
+        for coin in data:
+            result[coin['id']] = {
+                'current_price': coin['current_price'],
+                'market_cap': coin['market_cap'],
+                'high_24h': coin['high_24h'],
+                'low_24h': coin['low_24h'],
+                'price_change_24h': coin['price_change_24h'],
+                'price_change_percentage_24h': coin['price_change_percentage_24h']
+            }
+        return result
+    
+    except requests.exceptions.RequestException as e:
+        print(f"An error occurred while fetching data from Coingecko API: {e}")
+        return None
 
 def get_crypto_prices():
     url = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=gbp'
@@ -105,8 +112,9 @@ def bitcoin_chart(request):
         #print({'data': data_list})
         return JsonResponse({'data': data_list})
     else:
-        messages.warning(request, "You are making too many requests to the api. Please wait 60 seconds then retry")
+        messages.warning(request, "You are making too many requests to the api. Please wait 60 seconds then retry.A enforced timeout may occur please be patient")
         print(f"Error fetching data: {response.status_code}")
+        time.sleep(45)
 
 def ethereum_chart(request): 
     days = request.GET.get('days' , '365')
@@ -127,8 +135,9 @@ def ethereum_chart(request):
         # print({'data': data_list})
         return JsonResponse({'data': data_list})
     else:
-        messages.warning(request, "You are making too many requests to the api. Please wait 60 seconds then retry")
+        messages.warning(request, "You are making too many requests to the api. Please wait 60 seconds then retry. A enforced timeout may occur please be patient")
         print(f"Error fetching data: {response.status_code}")
+        time.sleep(45)
 
 def is_valid_btc_address(wallet_address):
     if re.match("^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$", wallet_address):
