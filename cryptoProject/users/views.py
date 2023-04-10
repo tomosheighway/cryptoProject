@@ -14,8 +14,19 @@ import time
 
 import requests
 
+cache = {}
+timestamp = 0
+
 def get_crypto_details():
+    global cache
+    global timestamp
+    
+    if time.time() - timestamp < 300 and 'crypto_details' in cache: # less than 5 mins 
+        print("using data from cache get_crypto_detials")
+        return cache['crypto_details']
+    
     try:
+        print("New data")
         url = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=gbp&ids=bitcoin%2Cethereum&order=market_cap_desc&per_page=5&page=1&sparkline=false&locale=en'
         response = requests.get(url)
         response.raise_for_status() 
@@ -31,13 +42,18 @@ def get_crypto_details():
                 'price_change_24h': coin['price_change_24h'],
                 'price_change_percentage_24h': coin['price_change_percentage_24h']
             }
+        
+        # Store the result in the cache
+        cache['crypto_details'] = result
+        timestamp = time.time()
+        
         return result
     
     except requests.exceptions.RequestException as e:
         print(f"An error occurred while fetching data from Coingecko API: {e}")
         return None
 
-def get_crypto_prices():
+def get_crypto_prices():            # potential to move to just other function and use cached values
     url = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=gbp'
     response = response = requests.get(url).json()
     return response
@@ -71,7 +87,6 @@ def home(request):
     ethereum_price = crypto_prices['ethereum']['gbp']
     return render(request, 'users/home.html', {'bitcoin_price': bitcoin_price, 'ethereum_price': ethereum_price})
     
-
 
 def register(request):
     if request.method == "POST":
@@ -150,7 +165,6 @@ def is_valid_eth_address(wallet_address):
         return True
     else:
         return False
-
 
 @login_required()
 def graphs(request):
