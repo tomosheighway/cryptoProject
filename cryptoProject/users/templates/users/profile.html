@@ -1,17 +1,15 @@
 {% extends 'users/base.html' %}
 {% block content%}
-    <div class="heading">
-        <h1 class="display-4">Profile</h1>
+    <div class="profile-page">
+        <h1 class="display-4">Profile Page</h1>
         <p> On this page you can view your username and contact email</p>
-        <p> If you remove your user and all assosciated data / portfolios you can also do so using the delete button.</p>
-        <hr class="my-4">
-        
+        <p>If you wish to remove all your user details you can also do so</p>
     </div>
-    <div class="container">
-        <h2> Your username: {{user.username}}</h2>
-        <h2> Your contact email: {{user.email}}</h2>
+
+    <div class="profile-container">
+        <h2> Your username is: {{user.username}}</h2>
+        <h2> Your contact email is: {{user.email}}</h2>
         <a href="{% url 'logout' %}" class="btn">Logout</a>
-        <a href="{% url 'delete_user' %}" class="btn btn-danger">Delete Account</a>
-        
+        <a href="{% url 'delete_user' %}" class="btn btn-danger">Delete Account</a>   
     </div>
 {%endblock%}

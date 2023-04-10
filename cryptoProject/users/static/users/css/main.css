@@ -89,6 +89,24 @@ body {
     border-radius: 10px;
     padding: 30px;
 }
+/* --------------Profile page------------- */
+.profile-page {
+	background-color: #f8f9fa;
+	text-align: center;
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+.profile-container {
+	background-color: #ffffff;
+	border-radius: 5px;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+	height: 100%;
+	margin: 20px;
+	padding: 20px;
+	vertical-align: top;
+	/* max-width: 1000px; */
+}
+
 
 /*-------------- Graph page ---------------- */
 .graphs-page {
@@ -189,40 +207,43 @@ body {
 }
 
 .add-wallet label {
-  display: block;
-  font-size: 16px;
-  font-weight: bold;
-  margin-bottom: 5px;
+	display: block;
+	font-size: 16px;
+	font-weight: bold;
+	margin-bottom: 5px;
 }
 
 .add-wallet input[type="text"],
 .add-wallet select {
-  width: 100%;
-  height: 40px;
-  margin-bottom: 20px;
-  padding: 5px 10px;
-  font-size: 16px;
-  border: 1px solid #d1d1d1;
-  border-radius: 5px;
-  box-sizing: border-box;
+	width: 100%;
+	height: 40px;
+	margin-bottom: 20px;
+	padding: 5px 10px;
+	font-size: 16px;
+  	border: 1px solid #d1d1d1;
+ 	border-radius: 5px;
+  	box-sizing: border-box;
 }
 
 .add-wallet input[type="text"]:focus,
 .add-wallet select:focus {
-  outline: none;
-  border-color: #007bff;
+  	outline: none;
+  	border-color: #007bff;
 }
 
 .add-wallet button[type="submit"] {
-  background-color: #007bff;
-  border: none;
-  color: #ffffff;
-  padding: 10px 20px;
-  font-size: 16px;
-  font-weight: bold;
-  border-radius: 5px;
-  cursor: pointer;
+	background-color: #007bff; 
+	border: none;
+	color: rgb(255, 255, 255);
+	padding: 10px 24px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	margin: 4px 2px;
+	cursor: pointer;
 }
+
 
 .add-wallet button[type="submit"]:hover {
 	background-color: #3e9e41;
