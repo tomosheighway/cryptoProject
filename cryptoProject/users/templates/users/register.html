@@ -1,25 +1,21 @@
 {% extends 'users/base.html' %}
 {% load crispy_forms_tags %}
-{% load static %}
 
 {% block content%}
-    <link rel="stylesheet" href="..\..\static\users\css\main.css">
-    <div class="container" style="margin-top: 30px;">
+    <div class="register-container">
 
         <form action="" method="POST">
             {% csrf_token %}
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4" style="color: rgb(0, 0, 0);">Join Now</legend>
+            <div class="register-from">
+                <h1>Register Now </h1>
                 {{ form|crispy }}
-                <!-- {{ form.bitcoin_address}} -->
-            </fieldset>
-            <div class="form-group" id="signup-button">
-                <button class="btn ">Sign Up</button>
             </div>
-            <div class="form-group">
-                <p> Already have an account?</p>
-                <small class="text-muted ml-3" > <a href="{% url 'login' %}" class="btn">Sign In</a></small>
+            <div id="signup-button">
+                <button class="btn ">Register</button>
             </div>
-
+            <div>
+                <br> 
+                <a href="{% url 'login' %}">Already have an account? </a>
+            </div>
     </div>
 {% endblock%}

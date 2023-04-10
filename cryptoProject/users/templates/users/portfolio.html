@@ -1,11 +1,13 @@
 {% extends 'users/base.html' %}
 
 {% block content %}
-    <div class="container">
-           
-            <h2>Hello {{user.username}}</h2>
-            <h3>Add wallet address and select currency name to add a new holding to your portfolio</h3>
-        <div class="add-wallet"> <!-- Add missing closing tag for div element -->
+    <div class="portfolio-page">
+            
+            <h1 class="display-4"> Portfolio Page</h1>
+            <p>Input wallet address and select currency name to add a new holding to your portfolio</p>
+    </div>
+    <div class="portfolio-page-container">        
+        <div class="add-wallet"> 
             <form method="post" action="{% url 'portfolio' %}">
                 {% csrf_token %}
                 <label for="wallet_address">Wallet Address:</label>
@@ -21,112 +23,69 @@
                 <br>  
                 <button type="submit">Add</button>    
             </form>
-        </div>    
-            <h2>Your Portfolio</h2>
-            
-            {% if portfolios %}
+        </div> 
 
-            <table >
-            <tr>
-                <th>Currency</th>
-                <th>Address</th>
-                <th>Balance</th>
-                <th>Value</th>
-                <th> Daily % change</th>
-                <th>Delete</th>
-            </tr>
-                    {% for portfolio in portfolios %}
-                        {% if portfolio.currency == 'btc' %}
-                        <tr>
-                            <td>{{ portfolio.currency|upper}}</td>
-                            <td>{{ portfolio.address }}</td>
-                            <td>{{ portfolio.balance }} BTC</td>
-                            <td>£{{ portfolio.value|floatformat:2 }}</td>
-                            <td style="{% if crypto_stats.bitcoin.price_change_percentage_24h >= 0 %}color:green;{% else %}color:red;{% endif %}">
-                                {{ crypto_stats.bitcoin.price_change_percentage_24h |floatformat:2 }}%
-                            </td>
-                            <td><a href="{% url 'delete_portfolio' pk=portfolio.pk %}">X</a></td>
-                        </tr>   
-                        {% elif portfolio.currency == 'eth' %}
-                        <tr>
-                            <td>{{ portfolio.currency|upper }}</td>
-                            <td>{{ portfolio.address }}</td>
-                            <td>{{ portfolio.balance }} ETH</td>
-                            <td>£{{ portfolio.value|floatformat:2 }}</td>
-                            <td style="color: {% if crypto_stats.ethereum.price_change_percentage_24h >= 0 %}green{% else %}red{% endif %}">
-                                {{ crypto_stats.ethereum.price_change_percentage_24h|floatformat:2 }}%
-                            </td>
-                            <td><a href="{% url 'delete_portfolio' pk=portfolio.pk %}">X</a></td>
-                        </tr>
-                        {% else %}
-                        <tr>
-                            <td>{{ portfolio.currency|upper }}</td>
-                            <td>{{ portfolio.address }}</td>
-                            <td colspan="3">{{ portfolio.currency }} is not supported.</td>
-                        </tr>
-                        {% endif %}
-                    {% endfor %}
-                    <script>
-                        function confirmDelete(pk) {
-                            if (confirm("Are you sure you want to delete this portfolio?")) {
-                                window.location.href = "/delete-portfolio/" + pk + "/";
+        <div class="portfolio-tables-container">
+            <h2>User {{user.username}}'s Portfolio</h2>
+            {% if portfolios %}
+            <table class="portfolio-table">
+                <tr>
+                    <th>Currency</th>
+                    <th>Address</th>
+                    <th>Balance</th>
+                    <th>Value</th>
+                    <th>Daily % change</th>
+                    <th>Delete</th>
+                </tr>
+                        {% for portfolio in portfolios %}
+                            {% if portfolio.currency == 'btc' %}
+                            <tr>
+                                <td>{{ portfolio.currency|upper}}</td>
+                                <td>{{ portfolio.address }}</td>
+                                <td>{{ portfolio.balance }} BTC</td>
+                                <td>£{{ portfolio.value|floatformat:2 }}</td>
+                                <td style="{% if crypto_stats.bitcoin.price_change_percentage_24h >= 0 %}color:green;{% else %}color:red;{% endif %}">
+                                    {{ crypto_stats.bitcoin.price_change_percentage_24h |floatformat:2 }}%
+                                </td>
+                                <td><a href="{% url 'delete_portfolio' pk=portfolio.pk %}">X</a></td>
+                            </tr>   
+                            {% elif portfolio.currency == 'eth' %}
+                            <tr>
+                                <td>{{ portfolio.currency|upper }}</td>
+                                <td>{{ portfolio.address }}</td>
+                                <td>{{ portfolio.balance }} ETH</td>
+                                <td>£{{ portfolio.value|floatformat:2 }}</td>
+                                <td style="color: {% if crypto_stats.ethereum.price_change_percentage_24h >= 0 %}green{% else %}red{% endif %}">
+                                    {{ crypto_stats.ethereum.price_change_percentage_24h|floatformat:2 }}%
+                                </td>
+                                <td><a href="{% url 'delete_portfolio' pk=portfolio.pk %}">X</a></td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td>{{ portfolio.currency|upper }}</td>
+                                <td>{{ portfolio.address }}</td>
+                                <td colspan="3">{{ portfolio.currency }} is not supported.</td>
+                            </tr>
+                            {% endif %}
+                        {% endfor %}
+                        <script>
+                            function confirmDelete(pk) {
+                                if (confirm("Are you sure you want to delete this portfolio?")) {
+                                    window.location.href = "/delete-portfolio/" + pk + "/";
+                                }
                             }
-                        }
-                    </script> 
-            <tr>
-                <td colspan="3"></td>
-                <td>Total: £ {{total_value|floatformat:2}}</td>
-                <td></td>
-            </tr>
+                        </script> 
+                <tr>
+                    <td colspan="3"></td>
+                    <td>Total: £ {{total_value|floatformat:2}}</td>
+                    <td></td>
+                </tr>
             </table>
         {% else %}
             <p>You don't have any portfolios yet.</p>
         {% endif %}
-          
-
-        <style>
-            table {
-            border-collapse: collapse;
-            width: 90%;
-            height: 100%;
-            background-color: #ffffff;
-            padding: 20px;
-            margin: 20px auto;
-            border-radius: 5px;
-            
-            vertical-align: top;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-            }
-        
-            th, td {
-            text-align: left;
-            padding: 8px;
-            border: 1px solid #ddd;
-            }
-        
-            th {
-            background-color: #f2f2f2;
-            }
-        
-            tr:nth-child(even) {
-            background-color: #f2f2f2;
-            }
-
-            .add-wallet {
-                border-collapse: collapse;
-                width: 30%;
-                height: 100%;
-                background-color: #ffffff;
-                padding: 20px;
-                margin: 20px auto;
-                border-radius: 5px;
-                
-                vertical-align: top;
-                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-            }
-
-
-        </style>
+        </div>   
+    </div>  
     </div>
 {% endblock %}
 

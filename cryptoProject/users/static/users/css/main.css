@@ -1,10 +1,9 @@
-/* Add some basic styling to the navigation bar */
+
 nav {
 	background-color: #333;
 	overflow: hidden;
 }
 
-/* Style the links within the navigation bar */
 nav a {
 	float: left;
 	color: rgb(255, 255, 255);
@@ -12,10 +11,13 @@ nav a {
 	padding: 14px 16px;
 	text-decoration: none;
 }
+nav a:hover {
+	background-color: #555;
+}
 
-/* Style the login and register buttons */
+
 .btn {
-	background-color: #007bff; /* Green */
+	background-color: #007bff; 
 	border: none;
 	color: rgb(255, 255, 255);
 	padding: 10px 24px;
@@ -32,185 +34,6 @@ nav a {
 	border-color: #4CAF50;
 }
 
-/* Add this code to your main.css file */
-body {
-	font-family: Arial, sans-serif;
-	background-color: #f2f2f2;
-}
-
-.form-container {
-	background-color: #fff;
-	border: 1px solid #ddd;
-	border-radius: 5px;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-	margin: 20px auto;
-	padding: 20px;
-	max-width: 500px;
-}
-
-.form-container h1 {
-	text-align: center;
-	margin-bottom: 20px;
-}
-
-.form-container label {
-	display: block;
-	margin-bottom: 10px;
-	font-weight: bold;
-}
-
-.form-container input[type="text"],
-.form-container input[type="email"],
-.form-container input[type="password"] {
-	padding: 10px;
-	border: 1px solid #ddd;
-	border-radius: 5px;
-	width: 100%;
-	margin-bottom: 20px;
-	box-sizing: border-box;
-}
-
-.form-container input[type="submit"] {
-	background-color: #4CAF50;
-	color: #fff;
-	padding: 10px 20px;
-	border: none;
-	border-radius: 5px;
-	font-weight: bold;
-	cursor: pointer;
-}
-
-.form-container input[type="submit"]:hover {
-	background-color: #3e8e41;
-}
-
-.form-footer {
-	margin-top: 20px;
-	text-align: center;
-}
-
-.form-footer p {
-	font-size: 14px;
-}
-
-.form-footer a {
-	color: #4CAF50;
-	text-decoration: none;
-	font-weight: bold;
-}
-
-.stats-container {
-    height: 100%;
-	width: 50%;
-    background-color: #ffffff;
-    padding: 20px;
-    margin: 20px;
-    border-radius: 5px;
-	float: right;
-    vertical-align: top;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-}
-
-.graph-container {
-	height: 100%;
-	width: 50%;
-    background-color: #ffffff;
-    padding: 20px;
-    margin: 20px;
-    border-radius: 5px;
-	float: left;
-    vertical-align: top;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-}
-
-.table-container {
-	height: 100%;
-	width: 50%;
-    background-color: #ffffff;
-    padding: 20px;
-    margin: 20px;
-    border-radius: 5px;
-	float: left;
-    vertical-align: top;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-}
-
-.home-page {
-	background-color: #f8f9fa;
-	text-align: center;
-	padding-top: 80px;
-	padding-bottom: 80px;
-}
-.heading {
-	background-color: #f8f9fa;
-	text-align: center;
-	padding-top: 80px;
-	padding-bottom: 80px;
-}
-
-.btc-card {
-	margin-bottom: 30px;
-	height: 100%;
-	background-color: #ffffff;
-	padding: 20px;
-	margin: 20px;
-	margin-right: 20px;
-	width: calc(33.33% - 10px);
-	border-radius: 5px;
-	vertical-align: top;
-	float: left;
-	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-	max-width: 500px;
-}
-.eth-card {
-	margin-bottom: 30px;
-	height: 100%;
-	background-color: #ffffff;
-	padding: 20px;
-	margin: 20px;
-	margin-left: 20px;
-	width: calc(33.33% - 10px);
-	float: right;
-	border-radius: 5px;
-	vertical-align: top;
-	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-	
-	max-width: 500px;
-}
-.info-card{
-	text-align: center;
-	margin: 30px auto;
-	padding: 20px;
-	display: block;
-	width: calc(33.33% - 40px);
-	background-color: #ffffff;
-	border-radius: 5px;
-	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-}
-
-
-@media screen and (max-width: 767px) {
-	.btc-card, .eth-card {
-	  width: 100%;
-	  float: none;
-	  margin: 0;
-	  margin-bottom: 30px;
-	}
-  }
-.card-header {
-	background-color: #000000;
-	color: #fff;
-}
-
-.card-title {
-	font-size: 48px;
-	font-weight: 700;
-}
-
-.card-text {
-	font-size: 18px;
-}
-
 .btn-primary {
 	background-color: #007bff;
 	border-color: #007bff;
@@ -225,4 +48,356 @@ body {
 .btn-danger{
 	background-color: #ff0000;
 	border-color: #f02c2c;
+}
+
+
+body {
+	font-family: Arial, sans-serif;
+	background-color: #f2f2f2;
+}
+
+/* Register page */
+.register-container {
+	background-color: #ffffff;
+	border-radius: 5px;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+	height: 100%;
+	margin: 20px;
+	padding: 20px;
+	vertical-align: top;
+}
+.register-form {
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 30px;
+}
+/* Login page */
+.login-container {
+	background-color: #ffffff;
+	border-radius: 5px;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+	height: 100%;
+	margin: 20px;
+	padding: 20px;
+	vertical-align: top;
+	align-items: center;
+	justify-content: center;
+	
+	
+}
+.login-form {
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 30px;
+}
+/* Graph page ---------------- */
+.graphs-page {
+	background-color: #f8f9fa;
+	text-align: center;
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+.eth-stats-container {
+	background-color: #ffffff;
+	border-radius: 5px;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+	float: left;
+	height: 100%;
+	margin: 20px;
+	padding: 20px;
+	vertical-align: top;
+	width: 10%;
+	max-width: 85%;
+	/* max-width: 1000px; */
+}
+.btc-stats-container {
+	background-color: #ffffff;
+	border-radius: 5px;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+	float: left;
+	height: 100%;
+	margin: 20px;
+	padding: 20px;
+	vertical-align: top;
+	width: 10%;
+	max-width: 85%; 
+}
+
+
+.graph-container {
+	background-color: #ffffff;
+	border-radius: 5px;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+	float: left;
+	height: 100%;
+	margin: 20px;
+	padding: 20px;
+	vertical-align: top;
+	width: 50%;
+	max-width: 85%; 
+	/* max-width: 1000px; */
+	}
+
+.graph-page-container {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	position: relative;
+}
+
+.gcontainer {
+	flex: 1 0 40%;
+	height: 50%;
+	margin-right: 20px;
+}
+
+@media screen and (max-width: 767px) {
+.gcontainer, .graph-container, .btc-stats-container,.eth-stats-container {
+	float: none;
+	margin: 5px;
+	margin-bottom: 30px;
+	max-width: 767px;
+	width: 100%;
+}
+}
+
+
+/* Portfolio page  */
+.portfolio-page {
+	background-color: #f8f9fa;
+	text-align: center;
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+.portfolio-tables-container{
+	background-color: #ffffff;
+	border-radius: 5px;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+	text-align: center;
+	overflow-x: auto;
+}
+
+.add-wallet {
+	border-collapse: collapse;
+	width: 30%;
+	height: 100%;
+	background-color: #ffffff;
+	padding: 20px;
+	margin: 20px auto;
+	border-radius: 5px;
+	vertical-align: top;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+.add-wallet label {
+  display: block;
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.add-wallet input[type="text"],
+.add-wallet select {
+  width: 100%;
+  height: 40px;
+  margin-bottom: 20px;
+  padding: 5px 10px;
+  font-size: 16px;
+  border: 1px solid #d1d1d1;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.add-wallet input[type="text"]:focus,
+.add-wallet select:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.add-wallet button[type="submit"] {
+  background-color: #007bff;
+  border: none;
+  color: #ffffff;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.add-wallet button[type="submit"]:hover {
+	background-color: #3e9e41;
+	border-color: #4CAF50;
+}
+
+.portfolio-table {
+	align-items: center;
+	border-collapse: collapse;
+	width: 100%;
+	overflow-x: auto;
+	margin: 0 auto;
+	max-width: 100%;
+	overflow-y: hidden;
+	
+}
+  
+.portfolio-table th,
+.portfolio-table td {
+	text-align: left;
+	border: 1px solid black;
+	padding: 8px;
+}
+  
+.portfolio-table th {
+	background-color: #1c2331;
+	color: white;
+}
+  
+.portfolio-table tr:nth-child(even) {
+	background-color: #f2f2f2;
+}
+
+.portfolio-table a {
+	text-decoration: none;
+	color: inherit;
+}
+
+.portfolio-table a:hover {
+	color: red;
+}
+
+.portfolio-table tr:last-child td {
+	border: none;
+	font-weight: bold;
+}
+
+@media screen and (max-width: 1000px) {
+	.portfolio-table td,
+	.portfolio-table th {
+	font-size: 12px;
+	}
+}
+@media screen and (max-width: 700px) {
+	.portfolio-table td,
+	.portfolio-table th {
+	font-size: 10px;
+	}
+}
+
+/* ------- */
+.table-container {
+	height: 100%;
+	width: 50%;
+    background-color: #ffffff;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 5px;
+	float: left;
+    vertical-align: top;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+
+.heading {
+	background-color: #f8f9fa;
+	text-align: center;
+	padding-top: 80px;
+	padding-bottom: 80px;
+}
+/* Home page ---------- */
+.home-page {
+	background-color: #f8f9fa;
+	text-align: center;
+	padding-top: 80px;
+	padding-bottom: 80px;
+}
+.card-container {
+	display: flex;
+	flex-wrap: wrap;
+  }
+  
+  .btc-card, .eth-card {
+	margin-bottom: 30px;
+	height: 100%;
+	max-height: 160px;
+	background-color: #ffffff;
+	padding: 20px;
+	margin: 20px;
+	margin-right: 20px;
+	margin-left: 20px;
+	width: calc(25% - 15px); 
+	border-radius: 5px;
+	vertical-align: top;
+	float: left;
+	text-align: center;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+	max-width: 500px;
+	
+  }
+
+  .info-card {
+	text-align: center;
+	
+	height: 100%;
+	max-height: 200px;
+	background-color: #ffffff;
+	padding: 20px;
+	margin: 20px;
+	margin-right: 20px;
+	margin-left: 100px;
+	margin-bottom: 30px;
+	width: calc(33.33% - 10px);
+	border-radius: 5px;
+	/* vertical-align: top; */
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+	max-width: 500px;
+	display: block;
+  }
+  
+  .btc-card {
+	margin-right: 20px;
+	float: left;
+  }
+  
+  .eth-card {
+	margin-left: 20px;
+	float: right;
+  }
+
+@media screen and (max-width: 1600px) {
+	.btc-card, .eth-card , .info-card {
+		width: 100%;
+		float: none;
+		margin: 0;
+		margin-bottom: 30px;
+		max-width: 1500px;
+	}
+}
+
+.card-header {
+	background-color: #000000;
+	color: #fff;
+}
+
+.card-title {
+	font-size: 48px;
+	font-weight: 700;
+}
+
+.card-text {
+	font-size: 18px;
+}
+
+/* ----------------- */
+
+.messages-container{
+	text-align: center;
+	height: 100%;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	max-height: 200px;
+	font-size: 20px;
+	background-color: #ffffff;
 }

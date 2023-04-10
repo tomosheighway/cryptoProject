@@ -1,100 +1,88 @@
 {% extends 'users/base.html' %}
 
 {% block content %}
-<style>
-    .container {
-      display: inline-block;
-      width: 40%;
-      height: 50%;
-      vertical-align: top;
-    }
-    
-    .graph-container {
-        width: 50%;
-    }
-    
-    .stats-container {
-      float: right;
-      vertical-align: top;
-    }
-</style>
-    
+
+<div class="graphs-page">
+<h1 class="display-4">Views price graphs and gain analysis into performance </h1>   
 <p> These graphs are powered by data from coingeko.</p>
 <p> Please respect fair use and keep requests to a minimum.</p>
-<p> If you breach the fair use policy you will be warned and have a timeout period.</p>
-<div class="stats-container container">
-    <h1>Stats</h1>
-    <p> These stats are powered by data from coingeko and update every time the page refreshes.</p>
-    <h2>Here are some stats about Bitcoin </h2> 
-    <p>Current price £{{ crypto_stats.bitcoin.current_price }} </p>  
-    <p>Market cap £{{ crypto_stats.bitcoin.market_cap }} </p>    
-    <p>24hour High £{{ crypto_stats.bitcoin.high_24h }} </p>  
-    <p>24hour low £{{ crypto_stats.bitcoin.low_24h }} </p>  
-    <p>Price change in last 24hours £{{ crypto_stats.bitcoin.price_change_24h|floatformat:2 }} </p>  
-    <p>Percentage change in last 24hours {{ crypto_stats.bitcoin.price_change_percentage_24h |floatformat:2}} %</p> 
-
-    <h2>Here are some stats about Ethereum </h2> 
-    <p>Current price £{{ crypto_stats.ethereum.current_price }} </p>  
-    <p>Market cap £{{ crypto_stats.ethereum.market_cap }} </p>    
-    <p>24hour High £{{ crypto_stats.ethereum.high_24h }} </p>  
-    <p>24hour low £{{ crypto_stats.ethereum.low_24h }} </p>  
-    <p>Price change in last 24hours £{{ crypto_stats.ethereum.price_change_24h|floatformat:2 }} </p>  
-    <p>Percentage change in last 24hours {{ crypto_stats.ethereum.price_change_percentage_24h|floatformat:2 }} %</p>  
-</div>    
-<div class="graph-container container">
-    <h1>Bitcoin Price Chart</h1>
-    <div>
-        <label for="days-select-btc">BTC Timeframe:</label>
-        <select id="days-select-btc">
-            <option value="0.04166666667">1 hour</option>
-            <option value="0.5">12 hour</option>
-            <option value="1">1 day</option>
-            <option value="7">7 days</option>
-            <option value="30">30 days</option>
-            <option value="90">90 days</option>
-            <option value="365"selected>1 year</option>
-            <option value="max">Max</option>
-        </select>
-    
-        <label for="interval-select-btc">BTC Interval:</label>
-        <select id="interval-select-btc">
-            <option value="minute">Minute</option>
-            <option value="hourly">Hour</option>
-            <option value="daily"selected>Day</option>
-            <!-- <option value="weekly">Week</option>
-            <option value="monthly">Month</option> -->
-        </select>
-        <button id="update-button-btc">Update BTC Chart</button>
-    </div>
-    <canvas id="bitcoin-chart"></canvas>
+<p> If you make too many requests you will be warned and have a timeout period.</p>
 </div>
-    
-<div class="graph-container container">
-    <h1>Ethereum Price Chart</h1>
-    <div>
-        <label for="days-select-eth">ETH Timeframe:</label>
-        <select id="days-select-eth">
-            <option value="0.04166666667">1 hour</option>
-            <option value="0.5">12 hour</option>
-            <option value="1">1 day</option>
-            <option value="7">7 days</option>
-            <option value="30">30 days</option>
-            <option value="90">90 days</option>
-            <option value="365"selected>1 year</option>
-            <option value="max">Max</option>
-        </select>
-    
-        <label for="interval-select-eth">ETH Interval:</label>
-        <select id="interval-select-eth">
-            <option value="minute">Minute</option>
-            <option value="hourly">Hour</option>
-            <option value="daily"selected>Day</option>
-        </select>
-        <button id="update-button-eth">Update ETH Chart</button>
+<div class = graph-page-container>
+    <div class="graph-container gcontainer">
+        <h1>Bitcoin Price Chart</h1>
+        <div>
+            <label for="days-select-btc">BTC Timeframe:</label>
+            <select id="days-select-btc">
+                <option value="0.04166666667">1 hour</option>
+                <option value="0.5">12 hour</option>
+                <option value="1">1 day</option>
+                <option value="7">7 days</option>
+                <option value="30">30 days</option>
+                <option value="90">90 days</option>
+                <option value="365"selected>1 year</option>
+                <option value="max">Max</option>
+            </select>
+        
+            <label for="interval-select-btc">BTC Interval:</label>
+            <select id="interval-select-btc">
+                <option value="minute">Minute</option>
+                <option value="hourly">Hour</option>
+                <option value="daily"selected>Day</option>
+                <!-- <option value="weekly">Week</option>
+                <option value="monthly">Month</option> -->
+            </select>
+            <button id="update-button-btc">Update BTC Chart</button>
+        </div>
+        <canvas id="bitcoin-chart"></canvas>
     </div>
-    <canvas id="ethereum-chart"></canvas>
+    <div class="btc-stats-container gcontainer">
+        <!-- <h1>Stats</h1>
+        <p> These stats are powered by data from coingeko and update every time the page refreshes.</p> -->
+        <h2>Here are some stats about Bitcoin </h2> 
+        <p>Current price £{{ crypto_stats.bitcoin.current_price }} </p>  
+        <p>Market cap £{{ crypto_stats.bitcoin.market_cap }} </p>    
+        <p>24hour High £{{ crypto_stats.bitcoin.high_24h }} </p>  
+        <p>24hour low £{{ crypto_stats.bitcoin.low_24h }} </p>  
+        <p>Price change in last 24hours £{{ crypto_stats.bitcoin.price_change_24h|floatformat:2 }} </p>  
+        <p>Percentage change in last 24hours {{ crypto_stats.bitcoin.price_change_percentage_24h |floatformat:2}} %</p> 
+    </div> 
+    <div class="graph-container gcontainer">
+        <h1>Ethereum Price Chart</h1>
+        <div>
+            <label for="days-select-eth">ETH Timeframe:</label>
+            <select id="days-select-eth">
+                <option value="0.04166666667">1 hour</option>
+                <option value="0.5">12 hour</option>
+                <option value="1">1 day</option>
+                <option value="7">7 days</option>
+                <option value="30">30 days</option>
+                <option value="90">90 days</option>
+                <option value="365"selected>1 year</option>
+                <option value="max">Max</option>
+            </select>
+        
+            <label for="interval-select-eth">ETH Interval:</label>
+            <select id="interval-select-eth">
+                <option value="minute">Minute</option>
+                <option value="hourly">Hour</option>
+                <option value="daily"selected>Day</option>
+            </select>
+            <button id="update-button-eth">Update ETH Chart</button>
+        </div>
+        <canvas id="ethereum-chart"></canvas>
+    </div>
+    <div class="eth-stats-container gcontainer">    
+        <h2>Here are some stats about Ethereum </h2> 
+        <p>Current price £{{ crypto_stats.ethereum.current_price }} </p>  
+        <p>Market cap £{{ crypto_stats.ethereum.market_cap }} </p>    
+        <p>24hour High £{{ crypto_stats.ethereum.high_24h }} </p>  
+        <p>24hour low £{{ crypto_stats.ethereum.low_24h }} </p>  
+        <p>Price change in last 24hours £{{ crypto_stats.ethereum.price_change_24h|floatformat:2 }} </p>  
+        <p>Percentage change in last 24hours {{ crypto_stats.ethereum.price_change_percentage_24h|floatformat:2 }} %</p>  
+    </div>        
+    
 </div>
-
 
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -102,8 +90,6 @@
 <script>
 var btc_ctx = document.getElementById('bitcoin-chart').getContext('2d');
 var eth_ctx = document.getElementById('ethereum-chart').getContext('2d');
-// const data = JSON.parse('{{ bitcoin_data|escapejs }}');
-
 
 var btc_chart = new Chart(btc_ctx, {
     type: 'line',

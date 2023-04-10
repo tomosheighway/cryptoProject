@@ -10,39 +10,43 @@
         <p class="lead">View live price graphs and stats for major cyrptocurrencies</p>
         <p class="lead">For orignal proof of concept only BTC and ETH are supported in this system</p>
         <hr class="my-4">
-        <a class="btn btn-primary btn-lg" href="{% url 'register' %}" role="button">Get Started Now</a>
-        
-
+        {% if user.is_authenticated %}
+            <a class="btn btn-primary btn-lg" href="{% url 'portfolio' %}" role="button">View Portfolio</a>
+        {% else %}
+            <a class="btn btn-primary btn-lg" href="{% url 'register' %}" role="button">Get Started Now</a>
+        {% endif %}    
     </div>
 
+    <div class="card-container">
+        <div class="info-card">
+            <h3> Project Info</h3>
+            <p> This is a dissertation project to create a crypto portfolio site</p>
+            <p> The site has been built using the django framework</p>
+            <p> By Tomos Heighway</p>
+        </div>
 
-    <div class="btc-card">
-        <div class="card mb-4">
-            <div class="card-header">
-                <h4 class="mb-0">Live Bitcoin Price</h4>
-            </div>
-            <div class="card-body">
-                <h2 class="card-title">£{{ bitcoin_price }}</h2>
+        <div class="btc-card">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4 class="mb-0">Live Bitcoin Price</h4>
+                </div>
+                <div class="card-body">
+                    <h2 class="card-title">£{{ bitcoin_price }}</h2>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="eth-card">
-        <div class="card mb-4">
-            <div class="card-header">
-                <h4 class="mb-0">Ethereum Price</h4>
-            </div>
-            <div class="card-body">
-                <h2 class="card-title">£{{ ethereum_price }}</h2>
+        <div class="eth-card">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4 class="mb-0">Ethereum Price</h4>
+                </div>
+                <div class="card-body">
+                    <h2 class="card-title">£{{ ethereum_price }}</h2>
+                </div>
             </div>
         </div>
-    </div>
-   
+    
 
-    <div class="info-card">
-        <h3> Project Info</h3>
-        <p> This is a dissertation project to create a crypto portfolio site</p>
-        <p> The site has been built using the django framework</p>
-        <p> By Tomos Heighway</p>
     </div>
 {% endblock %}
