@@ -211,7 +211,7 @@ function fetch_eth_data() {
 }
 fetch_btc_data(); 
 fetch_eth_data();  
-setInterval(fetch_btc_data, 3600000);   
-setInterval(fetch_eth_data, 3600000);    // updates every hour at the moment but data only daily , (60000)=  minute 
+setInterval(fetch_btc_data, 300000);   
+setInterval(fetch_eth_data, 300000);    // updates every 5mins at the moment , (60000)=  minute (3600000 hour) 
 </script>
 {% endblock %}
