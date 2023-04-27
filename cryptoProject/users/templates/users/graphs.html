@@ -1,5 +1,5 @@
 {% extends 'users/base.html' %}
-
+{% load humanize %}
 {% block content %}
 
 <div class="graphs-page">
@@ -40,12 +40,12 @@
         <!-- <h1>Stats</h1>
         <p> These stats are powered by data from coingeko and update every time the page refreshes.</p> -->
         <h2>Here are some stats about Bitcoin </h2> 
-        <p>Current price £{{ crypto_stats.bitcoin.current_price }} </p>  
-        <p>Market cap £{{ crypto_stats.bitcoin.market_cap }} </p>    
-        <p>24hour High £{{ crypto_stats.bitcoin.high_24h }} </p>  
-        <p>24hour low £{{ crypto_stats.bitcoin.low_24h }} </p>  
-        <p>Price change in last 24hours £{{ crypto_stats.bitcoin.price_change_24h|floatformat:2 }} </p>  
-        <p>Percentage change in last 24hours {{ crypto_stats.bitcoin.price_change_percentage_24h |floatformat:2}} %</p> 
+        <p>Current price £{{ crypto_stats.bitcoin.current_price|intcomma }} </p>  
+        <p>Market cap £{{ crypto_stats.bitcoin.market_cap|intcomma  }} </p>    
+        <p>24hour High £{{ crypto_stats.bitcoin.high_24h|intcomma }} </p>  
+        <p>24hour low £{{ crypto_stats.bitcoin.low_24h|intcomma }} </p>  
+        <p>Price change in last 24hours £{{ crypto_stats.bitcoin.price_change_24h|floatformat:2|intcomma }} </p>  
+        <p>Percentage change in last 24hours {{ crypto_stats.bitcoin.price_change_percentage_24h |floatformat:2|intcomma}} %</p> 
     </div> 
     <div class="graph-container gcontainer">
         <h1>Ethereum Price Chart</h1>
@@ -74,11 +74,11 @@
     </div>
     <div class="eth-stats-container gcontainer">    
         <h2>Here are some stats about Ethereum </h2> 
-        <p>Current price £{{ crypto_stats.ethereum.current_price }} </p>  
-        <p>Market cap £{{ crypto_stats.ethereum.market_cap }} </p>    
-        <p>24hour High £{{ crypto_stats.ethereum.high_24h }} </p>  
-        <p>24hour low £{{ crypto_stats.ethereum.low_24h }} </p>  
-        <p>Price change in last 24hours £{{ crypto_stats.ethereum.price_change_24h|floatformat:2 }} </p>  
+        <p>Current price £{{ crypto_stats.ethereum.current_price|intcomma }} </p>  
+        <p>Market cap £{{ crypto_stats.ethereum.market_cap|intcomma }} </p>    
+        <p>24hour High £{{ crypto_stats.ethereum.high_24h|intcomma }} </p>  
+        <p>24hour low £{{ crypto_stats.ethereum.low_24h|intcomma }} </p>  
+        <p>Price change in last 24hours £{{ crypto_stats.ethereum.price_change_24h|floatformat:2|intcomma }} </p>  
         <p>Percentage change in last 24hours {{ crypto_stats.ethereum.price_change_percentage_24h|floatformat:2 }} %</p>  
     </div>        
     

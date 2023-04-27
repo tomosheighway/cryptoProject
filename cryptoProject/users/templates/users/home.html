@@ -1,5 +1,5 @@
 {% extends 'users/base.html' %}
-
+{% load humanize %}
 {% block title %}Home{% endblock %}
 
 {% block content %}
@@ -33,7 +33,7 @@
                     <h4 class="mb-0">Live Bitcoin Price</h4>
                 </div>
                 <div class="card-body">
-                    <h2 class="card-title">£{{ bitcoin_price }}</h2>
+                    <h2 class="card-title">£{{ bitcoin_price|intcomma }}</h2>
                 </div>
             </div>
         </div>
@@ -44,7 +44,7 @@
                     <h4 class="mb-0">Ethereum Price</h4>
                 </div>
                 <div class="card-body">
-                    <h2 class="card-title">£{{ ethereum_price }}</h2>
+                    <h2 class="card-title">£{{ ethereum_price|intcomma }}</h2>
                 </div>
             </div>
         </div>
