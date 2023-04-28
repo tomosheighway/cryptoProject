@@ -14,6 +14,8 @@ import time
 from django.core.cache import cache
 
 cache = {}
+bitcoin_chart_cache = {}
+ethereum_chart_cache = {}
 timestamp = 0
 counter = 0
 
@@ -113,12 +115,20 @@ def register(request):
 def profile(request):
     return render(request, 'users/profile.html')
 
-
 def bitcoin_chart(request):
+   
+    cache_key = 'bitcoin_chart_{}_{}'.format(request.GET.get('days'), request.GET.get('interval'))
+    if cache_key in bitcoin_chart_cache:
+  
+        cached_data_item = bitcoin_chart_cache[cache_key]
+        if time.time() - cached_data_item['timestamp'] < 300:  #5 mins 
+            print("using btc chart cache ")
+            return JsonResponse({'data': cached_data_item['data']})
+
     global counter 
-    counter = counter+1
+    counter += 1
     print(counter, "btc chart")
-    days = request.GET.get('days' , '365')
+    days = request.GET.get('days', '365')
     interval = interval = request.GET.get('interval', 'daily')
     url = "https://api.coingecko.com/api/v3/coins/bitcoin/market_chart"
     params = {
@@ -127,24 +137,35 @@ def bitcoin_chart(request):
         "interval": interval
     }
     response = requests.get(url, params=params)
-    if response.status_code == 200:
+    if response.status_code == 429:
+        messages.warning(request, "You are making too many requests to the api. Please wait 60 seconds then retry. A enforced timeout may occur please be patient")
+        print(f"Too many requests. Retrying in 60 seconds...")
+        time.sleep(60)
+    elif response.status_code == 200:
         data = json.loads(response.content)
         prices = data['prices']
-        #timestamps = [datetime.fromtimestamp(timestamp[0]/1000).strftime('%d/%m/%Y') for timestamp in prices]
         timestamps = [datetime.fromtimestamp(timestamp[0]/1000).strftime('%d-%m-%Y %H:%M') for timestamp in prices]
         prices_gbp = [price[1] for price in prices]
         data_list = [{'x': timestamp, 'y': price} for timestamp, price in zip(timestamps, prices_gbp)]
-        #print({'data': data_list})
+        # Cache the data for 1 minute
+        bitcoin_chart_cache[cache_key] = {'data': data_list, 'timestamp': time.time()}
         return JsonResponse({'data': data_list})
     else:
-        messages.warning(request, "You are making too many requests to the api. Please wait 60 seconds then retry.A enforced timeout may occur please be patient")
         print(f"Error fetching data: {response.status_code}")
-        time.sleep(45)
 
 def ethereum_chart(request):
+
+    cache_key = 'ethereum_chart_{}_{}'.format(request.GET.get('days'), request.GET.get('interval'))
+    
+    if cache_key in ethereum_chart_cache:
+        cached_data_item = ethereum_chart_cache[cache_key]
+        if time.time() - cached_data_item['timestamp'] < 300: # 5 mins 
+            print("using eth chart cache ")
+            return JsonResponse({'data': cached_data_item['data']})
+        
     global counter 
     counter = counter+1
-    print(counter, "eth chart") 
+    print(counter, "eth chart")     
     days = request.GET.get('days' , '365')
     interval = interval = request.GET.get('interval', 'daily')
     url = "https://api.coingecko.com/api/v3/coins/ethereum/market_chart"
@@ -154,18 +175,22 @@ def ethereum_chart(request):
         "interval": interval
     }
     response = requests.get(url, params=params)
-    if response.status_code == 200:
+    if response.status_code == 429:
+        messages.warning(request, "You are making too many requests to the api. Please wait 60 seconds then retry. A enforced timeout may occur please be patient")
+        print(f"Too many requests. Retrying in 60 seconds...")
+        time.sleep(60)
+    elif response.status_code == 200:
         data = json.loads(response.content)
         prices = data['prices']
         timestamps = [datetime.fromtimestamp(timestamp[0]/1000).strftime('%d-%m-%Y %H:%M') for timestamp in prices]
         prices_gbp = [price[1] for price in prices]
         data_list = [{'x': timestamp, 'y': price} for timestamp, price in zip(timestamps, prices_gbp)]
+        ethereum_chart_cache[cache_key] = {'data': data_list, 'timestamp': time.time()}
         # print({'data': data_list})
         return JsonResponse({'data': data_list})
-    else:
-        messages.warning(request, "You are making too many requests to the api. Please wait 60 seconds then retry. A enforced timeout may occur please be patient")
+    else: 
         print(f"Error fetching data: {response.status_code}")
-        time.sleep(45)
+
 
 def is_valid_btc_address(wallet_address):
     if re.match("^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$", wallet_address):
