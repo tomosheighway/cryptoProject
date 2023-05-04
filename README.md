@@ -2,7 +2,9 @@
 
 
 Instructions: 
-I developed the system using Django 3.2.7 but it has also been tested on version 4.2. 
+I developed the system using Django 3.2.7 but it has also been tested on version 4.2.
+The python version used during development is 3.9.10
+
 ![image](https://user-images.githubusercontent.com/40778852/235377868-85654b87-e132-4f3f-b943-7d7fe707b83b.png)
 
 
