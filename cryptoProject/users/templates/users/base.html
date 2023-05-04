@@ -1,14 +1,12 @@
-
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="UTF-8">
 	<title>{% block title %}{% endblock %}</title>
 	<link rel="stylesheet" href="..\..\static\users\css\main.css">
-	<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script> <!-- Needed in base.html to display the graphs on graph page -->
 </head>
 <body>
-	<!-- Add the navigation bar at the top -->
 	<nav>
 		<a href="{% url 'home' %}">Home</a>
 		<a href="{% url 'portfolio' %}">Portfolio</a>
@@ -32,7 +30,7 @@
 			{% endfor%}
 		{%endif  %}
 	</div>	
-	<!-- Add the rest of your website content here -->
 	{% block content %}{% endblock %}
 </body>
 </html>
+

@@ -6,7 +6,7 @@
 </head>
 <body>
     {% block content %}
-    <div class="container">
+    <div class="delete-container">
         <h2> Are you sure you want to delete your account? This will permanently delete all associated data in your portfolio.</h2>
         <form method="post" action="{% url 'delete_account' %}">
             {% csrf_token %}
@@ -24,7 +24,7 @@
         margin: 0;
         padding: 0;
     }
-    .container {
+    .delete-container {
         background-color: #fff;
         border: 1px solid #ddd;
         border-radius: 5px;

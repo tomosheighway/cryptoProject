@@ -3,7 +3,6 @@
 
 {% block content %}
     <div class="portfolio-page">
-            
             <h1 class="display-4"> Portfolio Page</h1>
             <p>Add wallet addresses bellow and select currency name</p>
             <p>View balances , value and 24hr performance</p>
@@ -14,19 +13,18 @@
                 {% csrf_token %}
                 <label for="wallet_address">Wallet Address:</label>
                 <input type="text" id="wallet_address" name="wallet_address" pattern="^(bc1|[13]|0x)[a-zA-HJ-NP-Z0-9]{25,}$" title="Please enter a valid Bitcoin or Ethereum address" required>
+                <!-- Still using Regex check in the input box to catch most clearly invalid addresses -->
                 <br>
                 <label for="currency_name">Currency Name:</label>
                 <select id="currency_name" name="currency_name" required>
                     <option value="">Select a currency...</option>
                     <option value="btc">Bitcoin</option>
                     <option value="eth">Ethereum</option>
-                    <!-- <option value="Litecoin">Litecoin</option> -->
                 </select>
                 <br>  
                 <button type="submit" class="btn">Add</button>    
             </form>
         </div> 
-
         <div class="portfolio-tables-container">
             <h2>User {{user.username}}'s Portfolio</h2>
             {% if portfolios %}
@@ -46,9 +44,9 @@
                                 <td>{{ portfolio.address }}</td>
                                 <td>{{ portfolio.balance }} BTC</td>
                                 <td>£{{ portfolio.value|floatformat:2|intcomma }}</td>
-                                <td style="{% if crypto_stats.bitcoin.price_change_percentage_24h >= 0 %}color:green;{% else %}color:red;{% endif %}">
+                                <td class="{% if crypto_stats.bitcoin.price_change_percentage_24h >= 0 %}positive{% else %}negative{% endif %}">
                                     {{ crypto_stats.bitcoin.price_change_percentage_24h |floatformat:2 }}%
-                                </td>
+                                  </td>
                                 <td><a href="{% url 'delete_portfolio' pk=portfolio.pk %}">X</a></td>
                             </tr>   
                             {% elif portfolio.currency == 'eth' %}
@@ -57,9 +55,9 @@
                                 <td>{{ portfolio.address }}</td>
                                 <td>{{ portfolio.balance }} ETH</td>
                                 <td>£{{ portfolio.value|floatformat:2|intcomma }}</td>
-                                <td style="color: {% if crypto_stats.ethereum.price_change_percentage_24h >= 0 %}green{% else %}red{% endif %}">
-                                    {{ crypto_stats.ethereum.price_change_percentage_24h|floatformat:2 }}%
-                                </td>
+                                <td class="{% if crypto_stats.bitcoin.price_change_percentage_24h >= 0 %}positive{% else %}negative{% endif %}">
+                                    {{ crypto_stats.ethereum.price_change_percentage_24h |floatformat:2 }}%
+                                  </td>
                                 <td><a href="{% url 'delete_portfolio' pk=portfolio.pk %}">X</a></td>
                             </tr>
                             {% else %}

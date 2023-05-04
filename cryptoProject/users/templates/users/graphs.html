@@ -6,7 +6,7 @@
 <h1 class="display-4">Graphs page</h1>  
 <p> View and manipulate price graphs </p>
 <p> Analyse and compare stats about the digital assets </p> 
-<p> These graphs are powered by data from coingeko. Please respect fair use and keep requests to a minimum. If you make too many requests you will be warned and have a timeout period.</p>
+<p> These graphs and stats are powered by data from coingeko. Please respect fair use and keep requests to a minimum. If you make too many requests you will be warned and have a timeout period.</p>
 </div>
 <div class = graph-page-container>
     <div class="graph-container gcontainer">
@@ -23,22 +23,17 @@
                 <option value="365"selected>1 year</option>
                 <option value="max">Max</option>
             </select>
-        
             <label for="interval-select-btc">Interval:</label>
             <select id="interval-select-btc">
                 <option value="minute">5 Minutes</option>
                 <option value="hourly">Hour</option>
                 <option value="daily"selected>Day</option>
-                <!-- <option value="weekly">Week</option>
-                <option value="monthly">Month</option> -->
             </select>
             <button id="update-button-btc">Update Chart</button>
         </div>
         <canvas id="bitcoin-chart"></canvas>
     </div>
     <div class="btc-stats-container gcontainer">
-        <!-- <h1>Stats</h1>
-        <p> These stats are powered by data from coingeko and update every time the page refreshes.</p> -->
         <h2>Here are some stats about Bitcoin </h2> 
         <p>Current price £{{ crypto_stats.bitcoin.current_price|intcomma }} </p>  
         <p>Market cap £{{ crypto_stats.bitcoin.market_cap|intcomma  }} </p>    
@@ -61,7 +56,6 @@
                 <option value="365"selected>1 year</option>
                 <option value="max">Max</option>
             </select>
-        
             <label for="interval-select-eth"> Interval:</label>
             <select id="interval-select-eth">
                 <option value="minute">5 Minutes</option>
@@ -81,137 +75,133 @@
         <p>Price change in last 24hours £{{ crypto_stats.ethereum.price_change_24h|floatformat:2|intcomma }} </p>  
         <p>Percentage change in last 24hours {{ crypto_stats.ethereum.price_change_percentage_24h|floatformat:2 }} %</p>  
     </div>        
-    
 </div>
 
-
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@1.1.1/dist/chartjs-plugin-zoom.min.js"></script>
 <script>
-var btc_ctx = document.getElementById('bitcoin-chart').getContext('2d');
-var eth_ctx = document.getElementById('ethereum-chart').getContext('2d');
-
-var btc_chart = new Chart(btc_ctx, {
-    type: 'line',
-    data: {
-        datasets: [{
-            label: 'Bitcoin Price (GBP)',
-            data:[],
-            borderColor: 'blue',
-            borderWidth: 1, 
-            pointRadius: 0,
-            fill: false
-        }]
-    },
-    options: {
-        plugins: {
-            legend: {
-                display: false
-            },
-            tooltip: {
-                enabled: true 
-            }
+    var btc_ctx = document.getElementById('bitcoin-chart').getContext('2d');
+    var eth_ctx = document.getElementById('ethereum-chart').getContext('2d');
+    var btc_chart = new Chart(btc_ctx, {
+        type: 'line',
+        data: {
+            datasets: [{
+                label: 'Bitcoin Price (GBP)',
+                data:[],
+                borderColor: 'blue',
+                borderWidth: 1, 
+                pointRadius: 0,
+                fill: false
+            }]
         },
-        scales: {
-            x: {
-                title: {
-                    display: true,
-                    text: 'Time'
-                },     
+        options: {
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    enabled: true 
+                }
             },
-            y: {
-                title: {
-                    display: true,
-                    text: 'Price (£)'
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Time'
+                    },     
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Price (£)'
+                    }
                 }
             }
-        }
-    }  
-});
+        }  
+    });
 
-var eth_chart = new Chart(eth_ctx, {
-    type: 'line',
-    data: {
-        datasets: [{
-            label: 'Ethereum Price (GBP)',
-            data:[],
-            borderColor: 'blue',
-            borderWidth: 1, 
-            pointRadius: 0,
-            fill: false
-        }]
-    },
-    options: {
-        plugins: {
-            legend: {
-                display: false
-            },
-            tooltip: {
-                enabled: true 
-            }
+    var eth_chart = new Chart(eth_ctx, {
+        type: 'line',
+        data: {
+            datasets: [{
+                label: 'Ethereum Price (GBP)',
+                data:[],
+                borderColor: 'blue',
+                borderWidth: 1, 
+                pointRadius: 0,
+                fill: false
+            }]
         },
-        scales: {
-            x: {
-                title: {
-                    display: true,
-                    text: 'Time'
+        options: {
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    enabled: true 
                 }
             },
-            y: {
-                title: {
-                    display: true,
-                    text: 'Price (£)'
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Time'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Price (£)'
+                    }
                 }
             }
-        }
-    }  
-});
-
-document.getElementById('update-button-btc').addEventListener('click', update_btc_chart);
-document.getElementById('update-button-eth').addEventListener('click', update_eth_chart);
-
-function update_btc_chart() {
-    const days = document.getElementById('days-select-btc').value;
-    const interval = document.getElementById('interval-select-btc').value;
-    fetch(`/bitcoin-chart/?days=${days}&interval=${interval}`)
-    .then(response => response.json())
-    .then(data => {
-        btc_chart.data.datasets[0].data = data.data;
-        btc_chart.update();
+        }  
     });
-}
 
-function update_eth_chart() {
-    const days = document.getElementById('days-select-eth').value;
-    const interval = document.getElementById('interval-select-eth').value;
-    fetch(`/ethereum-chart/?days=${days}&interval=${interval}`)
-    .then(response => response.json())
-    .then(data => {
-        eth_chart.data.datasets[0].data = data.data;
-        eth_chart.update();
-    });
-}
+    document.getElementById('update-button-btc').addEventListener('click', update_btc_chart);
+    document.getElementById('update-button-eth').addEventListener('click', update_eth_chart);
 
-function fetch_btc_data() {
-    fetch('/bitcoin-chart/')
-    .then(response => response.json())
-    .then(data => {
-        btc_chart.data.datasets[0].data = data.data;
-        btc_chart.update();
-    });
-}
+    function update_btc_chart() {
+        const days = document.getElementById('days-select-btc').value;
+        const interval = document.getElementById('interval-select-btc').value;
+        fetch(`/bitcoin-chart/?days=${days}&interval=${interval}`)
+        .then(response => response.json())
+        .then(data => {
+            btc_chart.data.datasets[0].data = data.data;
+            btc_chart.update();
+        });
+    }
 
-function fetch_eth_data() {
-    fetch('/ethereum-chart/')
-    .then(response => response.json())
-    .then(data => {
-        eth_chart.data.datasets[0].data = data.data;
-        eth_chart.update();
-    });
-}
-fetch_btc_data(); 
-fetch_eth_data();  
-setInterval(fetch_btc_data, 300000);   
-setInterval(fetch_eth_data, 300000);    // updates every 5mins at the moment , (60000)=  minute (3600000 hour) 
+    function update_eth_chart() {
+        const days = document.getElementById('days-select-eth').value;
+        const interval = document.getElementById('interval-select-eth').value;
+        fetch(`/ethereum-chart/?days=${days}&interval=${interval}`)
+        .then(response => response.json())
+        .then(data => {
+            eth_chart.data.datasets[0].data = data.data;
+            eth_chart.update();
+        });
+    }
+
+    function fetch_btc_data() {
+        fetch('/bitcoin-chart/')
+        .then(response => response.json())
+        .then(data => {
+            btc_chart.data.datasets[0].data = data.data;
+            btc_chart.update();
+        });
+    }
+
+    function fetch_eth_data() {
+        fetch('/ethereum-chart/')
+        .then(response => response.json())
+        .then(data => {
+            eth_chart.data.datasets[0].data = data.data;
+            eth_chart.update();
+        });
+    }
+    fetch_btc_data(); 
+    fetch_eth_data();  
+    setInterval(fetch_btc_data, 300000);   
+    setInterval(fetch_eth_data, 300000);    // updates every 5mins (300000) 
 </script>
 {% endblock %}
