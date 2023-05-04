@@ -13,21 +13,21 @@ import re
 import time
 from django.core.cache import cache
 
-cache = {}
+crypto_details_cache = {}
 bitcoin_chart_cache = {}
 ethereum_chart_cache = {}
 timestamp = 0
 counter = 0
 
 def get_crypto_details():
-    global cache
+    global crypto_details_cache
     global timestamp
     global counter
     
-    if time.time() - timestamp < 300 and 'crypto_details' in cache: # less than 5 mins 
+    if time.time() - timestamp < 300 and 'crypto_details' in crypto_details_cache: # less than 5 mins 
         print("using data from cache get_crypto_detials")
-        print(cache)
-        return cache['crypto_details']
+        # print(crypto_details_cache)
+        return crypto_details_cache['crypto_details']
     
     try:
         print("New data")
@@ -50,7 +50,7 @@ def get_crypto_details():
             }
         
         # Store the result in the cache
-        cache['crypto_details'] = result
+        crypto_details_cache['crypto_details'] = result
         timestamp = time.time()
         
         return result
@@ -72,8 +72,15 @@ def get_bitcoin_balance(wallet_address):
     if not re.match("^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$", wallet_address):
         raise ValueError("Invalid Bitcoin address")
     url = f'https://api.blockcypher.com/v1/btc/main/addrs/{wallet_address}/balance'
-    response = requests.get(url).json()
-    return response["final_balance"] / 100000000
+    try:
+        response = requests.get(url)
+        response.raise_for_status() 
+        json_response = response.json()
+        if 'final_balance' not in json_response:
+            raise ValueError("Error while fetching Bitcoin balance: Invalid response received from API")
+        return json_response["final_balance"] / 100000000
+    except requests.exceptions.RequestException as e:
+        raise ValueError("Error while fetching Bitcoin balance: " + str(e))
 
 def get_ethereum_balance(wallet_address):
     payload = {
@@ -193,10 +200,24 @@ def ethereum_chart(request):
 
 
 def is_valid_btc_address(wallet_address):
-    if re.match("^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$", wallet_address):
-        return True
-    else:
+    global counter 
+    counter = counter+1
+    url = f'https://api.blockcypher.com/v1/btc/main/addrs/{wallet_address}/balance'
+
+    response = requests.get(url)
+    data = response.json()
+
+    if 'error' in data:
         return False
+    else:
+        print('Address is valid', counter)
+        return True
+        
+
+    # if re.match("^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$", wallet_address):
+    #     return True
+    # else:
+    #     return False
 
 def is_valid_eth_address(wallet_address):
     if re.match("^0x[a-fA-F0-9]{40}$", wallet_address):
@@ -207,10 +228,6 @@ def is_valid_eth_address(wallet_address):
 @login_required()
 def graphs(request):
     crypto_stats = get_crypto_details()
-    # to try and reduce api calls - the data is still called in the graphs page with a fetch 
-    # bitcoin_data = bitcoin_chart(request)
-    # ethereum_data = ethereum_chart(request)
-    # return render(request, 'users/graphs.html' , {'bitcoin_data': bitcoin_data, 'ethereum_data': ethereum_data, 'crypto_stats': crypto_stats})
     return render(request, 'users/graphs.html' , {'crypto_stats': crypto_stats})
 
 
