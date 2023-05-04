@@ -58,8 +58,6 @@ def get_crypto_prices():
 
 # https://blockchain.info/rawaddr/{wallet_address}                alternataive endpoint 
 def get_bitcoin_balance(wallet_address):
-    if not re.match("^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$", wallet_address):
-        raise ValueError("Invalid Bitcoin address")
     url = f'https://api.blockcypher.com/v1/btc/main/addrs/{wallet_address}/balance'
     try:
         response = requests.get(url)
