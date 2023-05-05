@@ -6,7 +6,7 @@
 <h1 class="display-4">Graphs page</h1>  
 <p> View and manipulate price graphs </p>
 <p> Analyse and compare stats about the digital assets </p> 
-<p> These graphs and stats are powered by data from coingeko. Please respect fair use and keep requests to a minimum. If you make too many requests you will be warned and have a timeout period.</p>
+<p> *These graphs and stats are powered by data from coingeko. Please respect fair use and keep requests to a minimum. If you make too many requests you will be warned and have a timeout period.</p>
 </div>
 <div class = graph-page-container>
     <div class="graph-container gcontainer">
@@ -37,10 +37,10 @@
         <h2>Here are some stats about Bitcoin </h2> 
         <p>Current price £{{ crypto_stats.bitcoin.current_price|intcomma }} </p>  
         <p>Market cap £{{ crypto_stats.bitcoin.market_cap|intcomma  }} </p>    
-        <p>24hour High £{{ crypto_stats.bitcoin.high_24h|intcomma }} </p>  
-        <p>24hour low £{{ crypto_stats.bitcoin.low_24h|intcomma }} </p>  
-        <p>Price change in last 24hours £{{ crypto_stats.bitcoin.price_change_24h|floatformat:2|intcomma }} </p>  
-        <p>Percentage change in last 24hours {{ crypto_stats.bitcoin.price_change_percentage_24h |floatformat:2|intcomma}} %</p> 
+        <p>24 hour High £{{ crypto_stats.bitcoin.high_24h|intcomma }} </p>  
+        <p>24 hourLow £{{ crypto_stats.bitcoin.low_24h|intcomma }} </p>  
+        <p>Price change in last 24 hours £{{ crypto_stats.bitcoin.price_change_24h|floatformat:2|intcomma }} </p>  
+        <p>Percentage change in last 24 hours {{ crypto_stats.bitcoin.price_change_percentage_24h |floatformat:2|intcomma}} %</p> 
     </div> 
     <div class="graph-container gcontainer">
         <h1>Ethereum Price Chart</h1>
@@ -70,10 +70,10 @@
         <h2>Here are some stats about Ethereum </h2> 
         <p>Current price £{{ crypto_stats.ethereum.current_price|intcomma }} </p>  
         <p>Market cap £{{ crypto_stats.ethereum.market_cap|intcomma }} </p>    
-        <p>24hour High £{{ crypto_stats.ethereum.high_24h|intcomma }} </p>  
-        <p>24hour low £{{ crypto_stats.ethereum.low_24h|intcomma }} </p>  
-        <p>Price change in last 24hours £{{ crypto_stats.ethereum.price_change_24h|floatformat:2|intcomma }} </p>  
-        <p>Percentage change in last 24hours {{ crypto_stats.ethereum.price_change_percentage_24h|floatformat:2 }} %</p>  
+        <p>24 hour High £{{ crypto_stats.ethereum.high_24h|intcomma }} </p>  
+        <p>24 hour Low £{{ crypto_stats.ethereum.low_24h|intcomma }} </p>  
+        <p>Price change in last 24 hours £{{ crypto_stats.ethereum.price_change_24h|floatformat:2|intcomma }} </p>  
+        <p>Percentage change in last 24 hours {{ crypto_stats.ethereum.price_change_percentage_24h|floatformat:2 }} %</p>  
     </div>        
 </div>
 
