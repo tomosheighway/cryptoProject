@@ -1,4 +1,4 @@
-# cryptoProject for my Uni dissertation projet. 
+# Django cyrpto asset management project for my Uni dissertation projet. 
 
 
 Instructions: 
