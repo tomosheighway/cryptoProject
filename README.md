@@ -24,3 +24,10 @@ Then run the server with the command “py manage.py runserver“
 
 The server should start and have no errors. You can then navigate to the http address shown
 ![image](https://user-images.githubusercontent.com/40778852/235377918-84f70869-6fed-4a4d-8d84-0a0c3e731510.png)
+
+
+Images of GUI 
+![Screenshot 2024-07-02 191617](https://github.com/tomosheighway/cryptoProject/assets/40778852/571204be-e7ff-422e-ab99-27f624771921)
+![Screenshot 2024-07-02 191506](https://github.com/tomosheighway/cryptoProject/assets/40778852/26813cf5-8642-4025-8a3e-42b9d4a00fad)
+![Screenshot 2024-07-02 192314](https://github.com/tomosheighway/cryptoProject/assets/40778852/c827bc4e-08ae-4141-9ebd-5aea3c56f113)
+
