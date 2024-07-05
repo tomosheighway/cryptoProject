@@ -1,7 +1,7 @@
 # Django cyrpto asset management project for my Uni dissertation projet. 
 
 Project Changes (5/7/24):
-Project settings have been updated to utilize Docker for running the project. Refer to the alternative branch for pre-Docker configuration instructions.
+Project settings have been updated to utilise Docker for running the project. Refer to the alternative branch for pre-Docker configuration instructions.
 
 Instructions: 
 I developed the system using Django 3.2.7 but it has also been tested on version 4.2.
