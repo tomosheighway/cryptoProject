@@ -1,5 +1,7 @@
 # Django cyrpto asset management project for my Uni dissertation projet. 
 
+Project Changes (5/7/24):
+Project settings have been updated to utilize Docker for running the project. Refer to the alternative branch for pre-Docker configuration instructions.
 
 Instructions: 
 I developed the system using Django 3.2.7 but it has also been tested on version 4.2.
@@ -18,7 +20,7 @@ e.g virtual environment of env has been created
 Check your in the virtual environment symbolised by the (env) at the start then run the following command to install requirements. “pip install -r requirements.txt”
  ![image](https://user-images.githubusercontent.com/40778852/235377878-4f1a65db-3d88-4776-9eaa-a0738b021498.png)
 
-Then run the server with the command “py manage.py runserver“
+Then run the server with the command “python manage.py runserver“
  
 ![image](https://user-images.githubusercontent.com/40778852/235377880-7c61d6c2-2abe-48fa-a922-c97b4d0a7dec.png)
 
